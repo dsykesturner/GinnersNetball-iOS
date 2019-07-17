@@ -9,81 +9,204 @@
 import SpriteKit
 import GameplayKit
 
+struct pc { // Physics Category
+    static let none: UInt32 = 0x1 << 0
+    static let ball: UInt32 = 0x1 << 1
+    static let blockEdge: UInt32 = 0x1 << 2
+    static let blockBottom: UInt32 = 0x1 << 3
+}
+
+struct blockSizes {
+    static let bottomBlockHeight:CGFloat = 30
+    static let bottomBlockWidth:CGFloat = 100
+    static let edgeBlockHeight:CGFloat = 150
+    static let edgeBlockWidth:CGFloat = 30
+}
+
+struct ballSizes {
+    static let ballWidth:CGFloat = 50
+}
+
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    var scoreNode : SKLabelNode?
+    var blockNode: SKShapeNode?
+    var blockNodeL: SKShapeNode?
+    var blockNodeR: SKShapeNode?
+    
+    var score: Int = 0
     
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        self.physicsWorld.contactDelegate = self
+        self.setupBlockNode()
+        self.setupScoreNode()
+        self.startSpawningBalls()
+    }
+    
+    func setupScoreNode() {
+        // Add the current score
+        let x = self.size.width / 2
+        let y = self.size.height * 0.8
+        self.scoreNode = SKLabelNode(text: "0")
+        self.scoreNode?.alpha = 0.0
+        self.scoreNode?.numberOfLines = 0
+        self.scoreNode?.horizontalAlignmentMode = .center // why isnt this working
+        self.scoreNode?.position = CGPoint(x: x, y: y)
+        self.scoreNode?.run(SKAction.fadeIn(withDuration: 2.0))
+        self.addChild(self.scoreNode!)
+    }
+    
+    func setupBlockNode() {
+        // Build the bottom block
+        let bottomBlockWidth = blockSizes.bottomBlockWidth
+        let bottomBlockHeight = blockSizes.bottomBlockHeight
+        var size = CGSize(width: bottomBlockWidth, height: bottomBlockHeight)
+        let bottomBlockX = self.size.width/2
+        let bottomBlockY = CGFloat(40)
+        self.blockNode = SKShapeNode(rectOf: size)
+        self.blockNode?.lineWidth = 2.5
+        self.blockNode?.position = CGPoint(x: bottomBlockX, y: bottomBlockY)
+        self.blockNode?.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNode?.physicsBody?.isDynamic = false
+        self.blockNode?.physicsBody?.categoryBitMask = pc.blockBottom
+        self.blockNode?.physicsBody?.collisionBitMask = pc.none
+        self.blockNode?.physicsBody?.contactTestBitMask = pc.none
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        // Build the left block
+        let edgeBlockHeight = blockSizes.edgeBlockHeight
+        let edgeBlockWidth = blockSizes.edgeBlockWidth
+        size = CGSize(width: edgeBlockWidth, height: edgeBlockHeight)
+        var edgeBlockX = bottomBlockX - bottomBlockWidth/2 - edgeBlockWidth/2
+        let edgeBlockY = bottomBlockY - bottomBlockHeight/2 + edgeBlockHeight/2
+        self.blockNodeL = SKShapeNode(rectOf: size)
+        self.blockNodeL?.lineWidth = 2.5
+        self.blockNodeL?.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
+        self.blockNodeL?.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNodeL?.physicsBody?.isDynamic = false
+        self.blockNodeL?.physicsBody?.categoryBitMask = pc.blockEdge
+        self.blockNodeL?.physicsBody?.collisionBitMask = pc.ball
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
+        edgeBlockX = bottomBlockX + bottomBlockWidth/2 + edgeBlockWidth/2
+        self.blockNodeR = SKShapeNode(rectOf: size)
+        self.blockNodeR?.lineWidth = 2.5
+        self.blockNodeR?.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
+        self.blockNodeR?.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNodeR?.physicsBody?.isDynamic = false
+        self.blockNodeR?.physicsBody?.categoryBitMask = pc.blockEdge
+        self.blockNodeR?.physicsBody?.collisionBitMask = pc.ball
+        
+        addChild(self.blockNode!)
+        addChild(self.blockNodeL!)
+        addChild(self.blockNodeR!)
+    }
+    
+    func startSpawningBalls() {
+        run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.run(spawnBall),
+            SKAction.wait(forDuration: 0.4)
+            ])
+        ))
+    }
+    
+    func moveBlock(toPosition pos: CGPoint) {
+        if let bottom = self.blockNode,
+            let left = self.blockNodeL,
+            let right = self.blockNodeR {
             
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
+            let currentX = bottom.position.x
+            let diff = currentX-pos.x
+            var newX = pos.x
+            if diff >= ballSizes.ballWidth/2 {
+                print("moving too far! \(diff). limiting dist")
+                newX = currentX - ballSizes.ballWidth/2 - 0.1
+            } else if diff <= -ballSizes.ballWidth/2 {
+                newX = currentX + ballSizes.ballWidth/2 - 0.1
+            }
+            
+            bottom.position = CGPoint(x: newX, y: bottom.position.y)
+            
+            var x = newX - blockSizes.bottomBlockWidth/2 - blockSizes.edgeBlockWidth/2
+            let y = bottom.position.y - blockSizes.bottomBlockHeight/2 + blockSizes.edgeBlockHeight/2
+            left.position = CGPoint(x: x, y: y)
+            
+            x = newX + blockSizes.bottomBlockWidth/2 + blockSizes.edgeBlockWidth/2
+            right.position = CGPoint(x: x, y: y)
         }
     }
     
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
+    func updateScore() {
+        self.scoreNode?.text = "\(self.score)"
     }
     
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+    func spawnBall() {
+        let w = ballSizes.ballWidth
+        let x = CGFloat(arc4random() % UInt32(self.size.width))
+        let y = self.size.height
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        let netballNumber = arc4random() % 5 + 1
+        let netballImage = "netball\(netballNumber)"
+        let ball = SKSpriteNode(imageNamed: netballImage)
+        ball.position = CGPoint(x: x, y: y)
+        ball.size = CGSize(width: w, height: w)
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: w/2)
+        ball.physicsBody?.affectedByGravity = true
+        ball.physicsBody?.categoryBitMask = pc.ball
+        ball.physicsBody?.collisionBitMask = (pc.blockEdge | pc.blockBottom | pc.ball)
+        ball.physicsBody?.contactTestBitMask = pc.blockBottom
+        
+        // Vanish after 20 seconds
+        ball.run(SKAction.sequence([
+            SKAction.wait(forDuration: 60),
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.removeFromParent()
+        ]))
+        
+        self.addChild(ball)
+    }
+}
+
+// MARK: Touch Guestures
+
+extension GameScene {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.moveBlock(toPosition: t.location(in: self)) }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        for t in touches { self.moveBlock(toPosition: t.location(in: self)) }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+}
+
+// MARK: SKPhysicsContactDelegate
+
+extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        self.score += 1
+        self.updateScore()
+        
+        if contact.bodyA.categoryBitMask == pc.ball,
+            let node = contact.bodyA.node {
+            // Don't allow this ball to call this again
+            node.physicsBody?.contactTestBitMask = pc.none
+            node.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 0.5),
+                SKAction.removeFromParent()
+            ]))
+        } else if let node = contact.bodyB.node {
+            // Don't allow this ball to call this again
+            node.physicsBody?.contactTestBitMask = pc.none
+            node.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 0.5),
+                SKAction.removeFromParent()
+            ]))
+        }
     }
 }

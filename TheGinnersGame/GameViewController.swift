@@ -23,6 +23,7 @@ class GameViewController: UIViewController {
             let scene = GameScene(size: view.frame.size)
             scene.scaleMode = .aspectFill
             scene.difficulty = self.levelDifficulty ?? .easy
+            scene.gameDelegate = self
             
             // Setup view
             view.presentScene(scene)
@@ -37,6 +38,13 @@ class GameViewController: UIViewController {
     }
     
     func showIntoView() {
+        self.coordinator.showIntroView()
+    }
+}
+
+extension GameViewController: GameSceneDelegate {
+    
+    func quitGame() {
         self.coordinator.showIntroView()
     }
 }

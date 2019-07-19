@@ -14,6 +14,7 @@ struct pc { // Physics Category
     static let ball: UInt32 = 0x1 << 1
     static let blockEdge: UInt32 = 0x1 << 2
     static let blockBottom: UInt32 = 0x1 << 3
+    static let boundary: UInt32 = 0x1 << 4
 }
 
 struct blockSizes {
@@ -33,24 +34,55 @@ enum LevelDifficulty: Double {
     case hard = 1.6
 }
 
+enum GameState {
+    case intro
+    case started
+    case ended
+}
+
+protocol GameSceneDelegate:class {
+    func quitGame()
+}
+
 class GameScene: SKScene {
     
-    var scoreNode : SKLabelNode!
+    var scoreNode: SKLabelNode!
     var levelNode: SKLabelNode!
-    var blockNode: SKShapeNode?
-    var blockNodeL: SKShapeNode?
-    var blockNodeR: SKShapeNode?
+    var gameStateNode: SKLabelNode!
+    var boundaryNode: SKShapeNode!
+    var blockNode: SKShapeNode!
+    var blockNodeL: SKShapeNode!
+    var blockNodeR: SKShapeNode!
+    var ballNodes: [SKSpriteNode] = []
+    var playAgainButton: SKLabelNode!
+    var quitButton: SKLabelNode!
     
+    weak var gameDelegate: GameSceneDelegate!
+    
+    var state: GameState = .started
     var difficulty: LevelDifficulty = .easy
     var level: Int = 1
-    var score: Int = 0
+    var score: Int = 0 {
+        didSet {
+            self.scoreNode?.text = "\(self.score)"
+        }
+    }
     
     override func didMove(to view: SKView) {
         
         self.physicsWorld.contactDelegate = self
-        self.setupBlockNode()
+        self.setupNodes()
+        
+        // Start with the game intro
+        self.showGameIntro()
+    }
+    
+    func setupNodes() {
         self.setupScoreNode()
-        self.beginLevel()
+        self.setupLevelNode()
+        self.setupGameStateNodes()
+        self.setupBlockNode()
+        self.setupBoundaryNode()
     }
     
     func setupScoreNode() {
@@ -60,10 +92,45 @@ class GameScene: SKScene {
         self.scoreNode = SKLabelNode(text: "0")
         self.scoreNode.alpha = 0.0
         self.scoreNode.numberOfLines = 0
-        self.scoreNode.horizontalAlignmentMode = .center // why isnt this working
         self.scoreNode.position = CGPoint(x: x, y: y)
-        self.scoreNode.run(SKAction.fadeIn(withDuration: 2.0))
         self.addChild(self.scoreNode!)
+    }
+    
+    func setupLevelNode() {
+        let x = self.size.width / 2
+        let y = self.scoreNode.position.y + self.scoreNode.frame.height + 10
+        
+        self.levelNode = SKLabelNode()
+        self.levelNode.alpha = 0.0
+        self.levelNode.position = CGPoint(x: x, y: y)
+        
+        self.addChild(self.levelNode)
+    }
+    
+    func setupGameStateNodes() {
+        let x = self.size.width * 0.5
+        let gameStateY = self.size.height * 0.6
+
+        self.gameStateNode = SKLabelNode()
+        self.gameStateNode.position = CGPoint(x: x, y: gameStateY)
+        
+        self.addChild(self.gameStateNode)
+        
+        let playAgainY = self.size.height * 0.4
+        
+        self.playAgainButton = SKLabelNode(text: "Play Again")
+        self.playAgainButton.position = CGPoint(x: x, y: playAgainY)
+        self.playAgainButton.alpha = 0
+        
+        self.addChild(playAgainButton)
+        
+        let quitY = self.playAgainButton.position.y - self.playAgainButton.frame.height - 20
+        
+        self.quitButton = SKLabelNode(text: "Quit")
+        self.quitButton.position = CGPoint(x: x, y: quitY)
+        self.quitButton.alpha = 0
+        
+        self.addChild(quitButton)
     }
     
     func setupBlockNode() {
@@ -74,13 +141,14 @@ class GameScene: SKScene {
         let bottomBlockX = self.size.width/2
         let bottomBlockY = CGFloat(60)
         self.blockNode = SKShapeNode(rectOf: size)
-        self.blockNode?.lineWidth = 2.5
-        self.blockNode?.position = CGPoint(x: bottomBlockX, y: bottomBlockY)
-        self.blockNode?.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNode?.physicsBody?.isDynamic = false
-        self.blockNode?.physicsBody?.categoryBitMask = pc.blockBottom
-        self.blockNode?.physicsBody?.collisionBitMask = pc.none
-        self.blockNode?.physicsBody?.contactTestBitMask = pc.none
+        self.blockNode.lineWidth = 2.5
+        self.blockNode.alpha = 0
+        self.blockNode.position = CGPoint(x: bottomBlockX, y: bottomBlockY)
+        self.blockNode.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNode.physicsBody?.isDynamic = false
+        self.blockNode.physicsBody?.categoryBitMask = pc.blockBottom
+        self.blockNode.physicsBody?.collisionBitMask = pc.none
+        self.blockNode.physicsBody?.contactTestBitMask = pc.none
         
         // Build the left block
         let edgeBlockHeight = blockSizes.edgeBlockHeight
@@ -89,105 +157,45 @@ class GameScene: SKScene {
         var edgeBlockX = bottomBlockX - bottomBlockWidth/2 - edgeBlockWidth/2
         let edgeBlockY = bottomBlockY - bottomBlockHeight/2 + edgeBlockHeight/2
         self.blockNodeL = SKShapeNode(rectOf: size)
-        self.blockNodeL?.lineWidth = 2.5
-        self.blockNodeL?.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
-        self.blockNodeL?.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNodeL?.physicsBody?.isDynamic = false
-        self.blockNodeL?.physicsBody?.categoryBitMask = pc.blockEdge
-        self.blockNodeL?.physicsBody?.collisionBitMask = pc.ball
+        self.blockNodeL.lineWidth = 2.5
+        self.blockNodeL.alpha = 0
+        self.blockNodeL.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
+        self.blockNodeL.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNodeL.physicsBody?.isDynamic = false
+        self.blockNodeL.physicsBody?.categoryBitMask = pc.blockEdge
+        self.blockNodeL.physicsBody?.collisionBitMask = pc.ball
         
         edgeBlockX = bottomBlockX + bottomBlockWidth/2 + edgeBlockWidth/2
         self.blockNodeR = SKShapeNode(rectOf: size)
-        self.blockNodeR?.lineWidth = 2.5
-        self.blockNodeR?.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
-        self.blockNodeR?.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNodeR?.physicsBody?.isDynamic = false
-        self.blockNodeR?.physicsBody?.categoryBitMask = pc.blockEdge
-        self.blockNodeR?.physicsBody?.collisionBitMask = pc.ball
+        self.blockNodeR.lineWidth = 2.5
+        self.blockNodeR.alpha = 0
+        self.blockNodeR.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
+        self.blockNodeR.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.blockNodeR.physicsBody?.isDynamic = false
+        self.blockNodeR.physicsBody?.categoryBitMask = pc.blockEdge
+        self.blockNodeR.physicsBody?.collisionBitMask = pc.ball
         
-        addChild(self.blockNode!)
-        addChild(self.blockNodeL!)
-        addChild(self.blockNodeR!)
+        addChild(self.blockNode)
+        addChild(self.blockNodeL)
+        addChild(self.blockNodeR)
     }
     
-    func showLevelNode() {
-        // Display the level node with the current level
-        let x = self.size.width / 2
-        let y = self.scoreNode.position.y + self.scoreNode.frame.height + 10
-        self.levelNode = SKLabelNode(text: "Level \(self.level)")
-        self.levelNode.alpha = 0.0
-        self.levelNode.numberOfLines = 0
-        self.levelNode.horizontalAlignmentMode = .center // why isnt this working
-        self.levelNode.position = CGPoint(x: x, y: y)
+    func setupBoundaryNode() {
+        // Build the bottom boundary
+        let size = CGSize(width: self.size.height, height: 1)
+        let x = self.size.width/2
+        let y = CGFloat(0)
+        self.boundaryNode = SKShapeNode(rectOf: size)
+        self.boundaryNode.lineWidth = 0
+        self.boundaryNode.position = CGPoint(x: x, y: y)
+        self.boundaryNode.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.boundaryNode.physicsBody?.restitution = 0.5
+        self.boundaryNode.physicsBody?.isDynamic = false
+        self.boundaryNode.physicsBody?.categoryBitMask = pc.boundary
+        self.boundaryNode.physicsBody?.collisionBitMask = pc.ball
+        self.boundaryNode.physicsBody?.contactTestBitMask = pc.none
         
-        self.levelNode.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 1),
-            SKAction.wait(forDuration: 2),
-            SKAction.fadeOut(withDuration: 1)
-        ]))
-        
-        if self.levelNode.parent == nil {
-            self.addChild(self.levelNode)
-        }
-    }
-    
-    func beginLevel() {
-        
-        self.showLevelNode()
-        
-        let difficultyFactor = Double(truncating: pow(self.difficulty.rawValue, Double(self.level)) as NSNumber)
-        
-        let spawnSpeed = 1.0 / difficultyFactor
-        let numberOfLevels = Int(20 * difficultyFactor)
-        
-        print("Starting level \(self.level), speed=\(spawnSpeed)")
-        
-        let level = SKAction.sequence([
-            SKAction.run(spawnBall),
-            SKAction.wait(forDuration: spawnSpeed)
-            ])
-        
-        let runLevel = SKAction.sequence([
-            SKAction.repeat(level, count: numberOfLevels),
-            SKAction.run(increaseLevel)
-        ])
-        
-        run(runLevel)
-    }
-    
-    func increaseLevel() {
-        self.level += 1
-        self.beginLevel()
-    }
-    
-    func moveBlock(toPosition pos: CGPoint) {
-        if let bottom = self.blockNode,
-            let left = self.blockNodeL,
-            let right = self.blockNodeR {
-            
-            // Limit how far the basket can move to prevent the ball from slipping through the walls
-            let currentX = bottom.position.x
-            let diff = currentX-pos.x
-            var newX = pos.x
-            if diff >= ballSizes.ballWidth/2 {
-                newX = currentX - ballSizes.ballWidth/2 - 0.1
-            } else if diff <= -ballSizes.ballWidth/2 {
-                newX = currentX + ballSizes.ballWidth/2 - 0.1
-            }
-            
-            bottom.position = CGPoint(x: newX, y: bottom.position.y)
-            
-            var x = newX - blockSizes.bottomBlockWidth/2 - blockSizes.edgeBlockWidth/2
-            let y = bottom.position.y - blockSizes.bottomBlockHeight/2 + blockSizes.edgeBlockHeight/2
-            left.position = CGPoint(x: x, y: y)
-            
-            x = newX + blockSizes.bottomBlockWidth/2 + blockSizes.edgeBlockWidth/2
-            right.position = CGPoint(x: x, y: y)
-        }
-    }
-    
-    func updateScore() {
-        self.scoreNode?.text = "\(self.score)"
+        self.addChild(self.boundaryNode)
     }
     
     func spawnBall() {
@@ -203,25 +211,205 @@ class GameScene: SKScene {
         ball.physicsBody = SKPhysicsBody(circleOfRadius: w/2)
         ball.physicsBody?.affectedByGravity = true
         ball.physicsBody?.categoryBitMask = pc.ball
-        ball.physicsBody?.collisionBitMask = (pc.blockEdge | pc.blockBottom | pc.ball)
-        ball.physicsBody?.contactTestBitMask = pc.blockBottom
+        ball.physicsBody?.collisionBitMask = (pc.blockEdge | pc.blockBottom | pc.boundary | pc.ball)
+        ball.physicsBody?.contactTestBitMask = (pc.blockBottom | pc.boundary)
         
         // Vanish after 10 seconds
         ball.run(SKAction.sequence([
             SKAction.wait(forDuration: 10),
             SKAction.fadeOut(withDuration: 0.5),
             SKAction.removeFromParent()
-        ]))
+        ]), completion: {
+            self.ballNodes.removeAll(where: {$0 == ball})
+        })
         
+        self.ballNodes.append(ball)
         self.addChild(ball)
+    }
+    
+    func showLevelNode() {
+        // Display the level node with the current level
+        self.levelNode = SKLabelNode(text: "Level \(self.level)")
+        self.levelNode.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 1),
+            SKAction.wait(forDuration: 2),
+            SKAction.fadeOut(withDuration: 1)
+        ]))
+    }
+    
+    func beginLevel() {
+        
+        self.showLevelNode()
+        
+        let difficultyFactor = Double(truncating: pow(self.difficulty.rawValue, Double(self.level)) as NSNumber)
+        
+        let spawnSpeed = 1.0 / difficultyFactor
+        let numberOfLevels = Int(15 * difficultyFactor)
+        
+        print("Starting level \(self.level), speed=\(spawnSpeed)")
+        
+        let level = SKAction.sequence([
+            SKAction.run(spawnBall),
+            SKAction.wait(forDuration: spawnSpeed)
+            ])
+        
+        let runLevel = SKAction.sequence([
+            SKAction.repeat(level, count: numberOfLevels),
+            SKAction.run(increaseLevel)
+        ])
+        
+        run(runLevel, withKey: "spawnBalls")
+        
+    }
+    
+    func increaseLevel() {
+        self.level += 1
+        self.beginLevel()
+    }
+    
+    func moveBlock(toPosition pos: CGPoint) {
+        // Only move when the game is in play
+        guard self.state == .started else { return }
+        
+        // Limit how far the basket can move to prevent the ball from slipping through the walls
+        let currentX = self.blockNode.position.x
+        let diff = currentX-pos.x
+        var newX = pos.x
+        if diff >= ballSizes.ballWidth/2 {
+            newX = currentX - ballSizes.ballWidth/2 - 0.1
+        } else if diff <= -ballSizes.ballWidth/2 {
+            newX = currentX + ballSizes.ballWidth/2 - 0.1
+        }
+        
+        self.blockNode.position = CGPoint(x: newX, y: self.blockNode.position.y)
+        
+        var x = newX - blockSizes.bottomBlockWidth/2 - blockSizes.edgeBlockWidth/2
+        let y = self.blockNode.position.y - blockSizes.bottomBlockHeight/2 + blockSizes.edgeBlockHeight/2
+        self.blockNodeL.position = CGPoint(x: x, y: y)
+        
+        x = newX + blockSizes.bottomBlockWidth/2 + blockSizes.edgeBlockWidth/2
+        self.blockNodeR.position = CGPoint(x: x, y: y)
+    }
+    
+    func catchBall(_ ballNode: SKNode) {
+        // Increment the score
+        self.score += 1
+        
+        // Ensure the balls always disapear before they can spawn
+        let speed = (1.0 / Double(truncating: pow(self.difficulty.rawValue, Double(self.level)) as NSNumber))/2
+        
+        // Don't allow this ball to call this again
+        ballNode.physicsBody?.contactTestBitMask = pc.none
+        ballNode.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: speed),
+            SKAction.removeFromParent()
+        ]))
+    }
+    
+    // MARK: Button actions
+    
+    func playAgainTapped() {
+        guard self.state == .ended else { return }
+        
+        // Fade out all nodes out to original positions
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
+        self.blockNode.run(fadeOutAction)
+        self.blockNodeL.run(fadeOutAction)
+        self.blockNodeR.run(fadeOutAction)
+        self.gameStateNode.run(fadeOutAction)
+        self.scoreNode.run(fadeOutAction)
+        self.playAgainButton.run(fadeOutAction)
+        self.quitButton.run(fadeOutAction)
+        for ballNode in self.ballNodes {
+            ballNode.run(fadeOutAction) {
+                ballNode.removeFromParent()
+                self.ballNodes.removeAll(where: {$0 == ballNode})
+            }
+        }
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.run(showGameIntro)
+        ]))
+    }
+    
+    func quitTapped() {
+        guard self.state == .ended else { return }
+        
+        self.gameDelegate.quitGame()
+    }
+    
+    // MARK: Game state changers
+    
+    func showGameIntro() {
+        self.state = .intro
+        self.level = 1
+        self.score = 0
+        
+        let fadeInTime = 0.7
+        let fadeOutTime = 0.3
+        
+        self.gameStateNode.alpha = 0
+        self.gameStateNode.text = "3"
+        
+        let intoSequence = SKAction.sequence([
+            SKAction.fadeIn(withDuration: fadeInTime),
+            SKAction.fadeOut(withDuration: fadeOutTime),
+            SKAction.run {
+                self.gameStateNode.text = "2"
+            },
+            SKAction.fadeIn(withDuration: fadeInTime),
+            SKAction.fadeOut(withDuration: fadeOutTime),
+            SKAction.run {
+                self.gameStateNode.text = "1"
+            },
+            SKAction.fadeIn(withDuration: fadeInTime),
+            SKAction.fadeOut(withDuration: fadeOutTime),
+            SKAction.run({
+                self.blockNode?.run(SKAction.fadeIn(withDuration: fadeInTime))
+                self.blockNodeL?.run(SKAction.fadeIn(withDuration: fadeInTime))
+                self.blockNodeR?.run(SKAction.fadeIn(withDuration: fadeInTime))
+                self.scoreNode.run(SKAction.fadeIn(withDuration: fadeInTime))
+            }),
+            SKAction.wait(forDuration: fadeInTime),
+            SKAction.run(startGame)
+        ])
+        
+        self.gameStateNode.run(intoSequence)
+    }
+    
+    func startGame() {
+        self.state = .started
+        
+        self.beginLevel()
+    }
+    
+    func endGame() {
+        self.state = .ended
+        // Stop new balls from spawning
+        removeAction(forKey: "spawnBalls")
+        
+        let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
+        
+        self.gameStateNode.text = "Game Over"
+        self.gameStateNode.run(fadeInAction)
+        self.playAgainButton.run(fadeInAction)
+        self.quitButton.run(fadeInAction)
     }
 }
 
-// MARK: Touch Guestures
+// MARK: Touch Gestures
 
 extension GameScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.moveBlock(toPosition: t.location(in: self)) }
+        
+        guard let position = touches.first?.location(in: self) else { return }
+        if self.playAgainButton.contains(position) {
+            self.playAgainTapped()
+        } else if self.quitButton.contains(position) {
+            self.quitTapped()
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -240,27 +428,16 @@ extension GameScene {
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         
-        self.score += 1
-        self.updateScore()
-        
-        // Ensure the balls always disapear before they can spawn
-        let speed = (1.0 / Double(truncating: pow(self.difficulty.rawValue, Double(self.level)) as NSNumber))/2
-        
-        if contact.bodyA.categoryBitMask == pc.ball,
-            let node = contact.bodyA.node {
-            // Don't allow this ball to call this again
-            node.physicsBody?.contactTestBitMask = pc.none
-            node.run(SKAction.sequence([
-                SKAction.fadeOut(withDuration: speed),
-                SKAction.removeFromParent()
-            ]))
-        } else if let node = contact.bodyB.node {
-            // Don't allow this ball to call this again
-            node.physicsBody?.contactTestBitMask = pc.none
-            node.run(SKAction.sequence([
-                SKAction.fadeOut(withDuration: speed),
-                SKAction.removeFromParent()
-            ]))
+        if self.state == .started {
+            // Only bodyB should ever be the ball
+            if contact.bodyB.categoryBitMask == pc.ball, let ballNode = contact.bodyB.node {
+                // bodyA will either the the capturing basket or the boundary
+                if contact.bodyA.categoryBitMask == pc.blockBottom {
+                    self.catchBall(ballNode)
+                } else if contact.bodyA.categoryBitMask == pc.boundary {
+                    self.endGame()
+                }
+            }
         }
     }
 }

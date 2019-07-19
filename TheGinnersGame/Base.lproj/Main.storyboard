@@ -1,17 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Jdl-m1-Abl">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Intro View Controller-->
+        <scene sceneID="04q-Ad-eIq">
+            <objects>
+                <viewController storyboardIdentifier="IntroViewController" id="Jdl-m1-Abl" customClass="IntroViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mVR-LQ-Cjw" customClass="SKView">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaZ-aF-WyW">
+                                <rect key="frame" x="98" y="129" width="218" height="100.5"/>
+                                <string key="text">The Ginners
+Game</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGF-LC-QSO">
+                                <rect key="frame" x="169.5" y="474" width="75" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Medium">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="mediumTapped:" destination="Jdl-m1-Abl" eventType="touchUpInside" id="SJd-p4-lmM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1VJ-aB-XLJ">
+                                <rect key="frame" x="185" y="416" width="44" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Easy">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="easyTapped:" destination="Jdl-m1-Abl" eventType="touchUpInside" id="aSC-Yr-Zpv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pg-dx-bdQ">
+                                <rect key="frame" x="20" y="814" width="116" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Leaderboard">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="leaderboardTapped:" destination="Jdl-m1-Abl" eventType="touchUpInside" id="aMy-4v-tAW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GXm-fF-jCt">
+                                <rect key="frame" x="185" y="532" width="44" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Hard">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="hardTapped:" destination="Jdl-m1-Abl" eventType="touchUpInside" id="0MY-wR-NgM"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="GXm-fF-jCt" firstAttribute="top" secondItem="mGF-LC-QSO" secondAttribute="bottom" constant="20" id="9ba-Eb-e7I"/>
+                            <constraint firstItem="xaZ-aF-WyW" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="PzK-yw-SuC"/>
+                            <constraint firstItem="7pg-dx-bdQ" firstAttribute="leading" secondItem="MeR-o0-xtf" secondAttribute="leading" constant="20" id="Xyd-Dr-ead"/>
+                            <constraint firstItem="mGF-LC-QSO" firstAttribute="top" secondItem="1VJ-aB-XLJ" secondAttribute="bottom" constant="20" id="bwv-E3-QHn"/>
+                            <constraint firstItem="mGF-LC-QSO" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="1.1" id="hGG-Hc-JSP"/>
+                            <constraint firstItem="1VJ-aB-XLJ" firstAttribute="centerX" secondItem="mGF-LC-QSO" secondAttribute="centerX" id="jPn-B7-HXa"/>
+                            <constraint firstItem="GXm-fF-jCt" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="kzF-xz-hAJ"/>
+                            <constraint firstItem="xaZ-aF-WyW" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="0.4" id="n5z-QR-vOF"/>
+                            <constraint firstItem="MeR-o0-xtf" firstAttribute="bottom" secondItem="7pg-dx-bdQ" secondAttribute="bottom" constant="10" id="s3M-jn-8Dx"/>
+                            <constraint firstItem="mGF-LC-QSO" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="zUv-ti-F8h"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MeR-o0-xtf"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j4h-az-BjP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-538" y="138"/>
+        </scene>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameViewController" id="BV1-FR-VrT" customClass="GameViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
@@ -19,6 +98,69 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="139" y="138"/>
+        </scene>
+        <!--Leaderboard View Controller-->
+        <scene sceneID="hiU-iI-AT8">
+            <objects>
+                <viewController storyboardIdentifier="LeaderboardViewController" id="5BS-7V-DZ1" customClass="LeaderboardViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3bG-T4-THs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YM-A1-7DB">
+                                <rect key="frame" x="93" y="153.5" width="228" height="51"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTr-Qt-DPm">
+                                <rect key="frame" x="95" y="264.5" width="224" height="310.5"/>
+                                <string key="text">1. User Name One
+2. User Name Two
+3. User Name Three
+4. User Name Four
+5. User Name Five
+6. User Name Six
+7. User Name Seven
+8. User Name Eight
+9. User Name Nine
+10. User Name Ten</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIE-TM-MB6">
+                                <rect key="frame" x="177" y="696.5" width="60" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeTapped:" destination="5BS-7V-DZ1" eventType="touchUpInside" id="niT-l4-WeJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6EI-ee-WFY" secondAttribute="leading" constant="20" id="3iA-F7-oqW"/>
+                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="top" secondItem="2YM-A1-7DB" secondAttribute="bottom" constant="60" id="3zW-Ob-d2F"/>
+                            <constraint firstItem="XIE-TM-MB6" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="6Dw-mb-zck"/>
+                            <constraint firstItem="6EI-ee-WFY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTr-Qt-DPm" secondAttribute="trailing" constant="20" id="ENE-6U-9qY"/>
+                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="Iqg-pI-kB5"/>
+                            <constraint firstItem="2YM-A1-7DB" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="0.4" id="Wji-Vi-szP"/>
+                            <constraint firstItem="2YM-A1-7DB" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="dYK-lp-wqk"/>
+                            <constraint firstItem="XIE-TM-MB6" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="1.6" id="oVQ-L1-Hxn"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6EI-ee-WFY"/>
+                    </view>
+                    <connections>
+                        <outlet property="leaderboardLabel" destination="WTr-Qt-DPm" id="CWX-Lq-9vW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xd5-Iu-lYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="799" y="138"/>
         </scene>
     </scenes>
 </document>

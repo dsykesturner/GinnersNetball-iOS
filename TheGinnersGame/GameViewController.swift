@@ -12,52 +12,31 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    weak var coordinator: AppCoordinator!
+    var levelDifficulty: LevelDifficulty?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            
+            // Setup game scene
             let scene = GameScene(size: view.frame.size)
             scene.scaleMode = .aspectFill
+            scene.difficulty = self.levelDifficulty ?? .easy
+            
+            // Setup view
             view.presentScene(scene)
-            
-            // Load the SKScene from 'GameScene.sks'
-//            if let scene = SKScene(fileNamed: "GameScene") {
-//                // Set the scale mode to scale to fit the window
-//                scene.scaleMode = .aspectFill
-////                scene.size = self.view.bounds.size
-//
-//                // Present the scene
-//                view.presentScene(scene)
-//            }
-            
             view.ignoresSiblingOrder = true
-            
             view.showsFPS = true
             view.showsNodeCount = true
         }
     }
 
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        if let view = self.view as! SKView? {
-//            view.scene?.size = view.bounds.size
-//        }
-//    }
-    
-    override var shouldAutorotate: Bool {
-        return true
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
-    }
-
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func showIntoView() {
+        self.coordinator.showIntroView()
     }
 }

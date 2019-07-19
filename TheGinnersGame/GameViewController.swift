@@ -13,6 +13,7 @@ import GameplayKit
 class GameViewController: UIViewController {
 
     weak var coordinator: AppCoordinator!
+    var storage: Storage!
     var levelDifficulty: LevelDifficulty?
     
     override func viewDidLoad() {
@@ -46,5 +47,33 @@ extension GameViewController: GameSceneDelegate {
     
     func quitGame() {
         self.coordinator.showIntroView()
+    }
+    
+    func saveNewScore(_ score: Int) {
+        // Attempt to get a username
+        guard let username = self.storage.username else {
+            let requestUsername = UIAlertController(title: "Save To Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
+            requestUsername.addTextField { (textField) in
+                textField.placeholder = "Username"
+            }
+            let save = UIAlertAction(title: "Save", style: .default) { (action) in
+                guard let textField = requestUsername.textFields?.first,
+                    let newUsername = textField.text,
+                    newUsername.count > 0 else { return }
+                self.storage.username = newUsername
+                self.saveNewScore(score)
+            }
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            requestUsername.addAction(save)
+            requestUsername.addAction(cancel)
+            self.present(requestUsername, animated: true, completion: nil)
+            return
+        }
+        // Save the score if there is a username
+        let scoreModel = Score(username: username, score: score)
+        var leaderboard = self.storage.localLeaderboard
+        leaderboard.append(scoreModel)
+        leaderboard.sort(by: {$0 > $1})
+        self.storage.localLeaderboard = leaderboard
     }
 }

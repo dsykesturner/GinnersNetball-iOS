@@ -42,6 +42,7 @@ enum GameState {
 
 protocol GameSceneDelegate:class {
     func quitGame()
+    func saveNewScore(_ score: Int)
 }
 
 class GameScene: SKScene {
@@ -389,12 +390,16 @@ class GameScene: SKScene {
         // Stop new balls from spawning
         removeAction(forKey: "spawnBalls")
         
+        // Show the game over text and buttons
         let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
         
         self.gameStateNode.text = "Game Over"
         self.gameStateNode.run(fadeInAction)
         self.playAgainButton.run(fadeInAction)
         self.quitButton.run(fadeInAction)
+        
+        // Save the score to the leaderboard
+        self.gameDelegate.saveNewScore(self.score)
     }
 }
 

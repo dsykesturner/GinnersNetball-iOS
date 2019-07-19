@@ -115,7 +115,7 @@ Game</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTr-Qt-DPm">
-                                <rect key="frame" x="95" y="264.5" width="224" height="310.5"/>
+                                <rect key="frame" x="95" y="275.5" width="224" height="310.5"/>
                                 <string key="text">1. User Name One
 2. User Name Two
 3. User Name Three
@@ -140,17 +140,28 @@ Game</string>
                                     <action selector="closeTapped:" destination="5BS-7V-DZ1" eventType="touchUpInside" id="niT-l4-WeJ"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iar-iJ-qno">
+                                <rect key="frame" x="93" y="224.5" width="228" height="32"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <segments>
+                                    <segment title="Local"/>
+                                    <segment title="Global"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="WTr-Qt-DPm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6EI-ee-WFY" secondAttribute="leading" constant="20" id="3iA-F7-oqW"/>
-                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="top" secondItem="2YM-A1-7DB" secondAttribute="bottom" constant="60" id="3zW-Ob-d2F"/>
                             <constraint firstItem="XIE-TM-MB6" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="6Dw-mb-zck"/>
+                            <constraint firstItem="iar-iJ-qno" firstAttribute="width" secondItem="2YM-A1-7DB" secondAttribute="width" id="Bia-RM-JaX"/>
                             <constraint firstItem="6EI-ee-WFY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTr-Qt-DPm" secondAttribute="trailing" constant="20" id="ENE-6U-9qY"/>
                             <constraint firstItem="WTr-Qt-DPm" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="Iqg-pI-kB5"/>
-                            <constraint firstItem="2YM-A1-7DB" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="0.4" id="Wji-Vi-szP"/>
+                            <constraint firstItem="2YM-A1-7DB" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="0.4" id="Sc5-Hg-Wt5"/>
                             <constraint firstItem="2YM-A1-7DB" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="dYK-lp-wqk"/>
+                            <constraint firstItem="iar-iJ-qno" firstAttribute="centerX" secondItem="WTr-Qt-DPm" secondAttribute="centerX" id="fMe-Sl-rpR"/>
                             <constraint firstItem="XIE-TM-MB6" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="1.6" id="oVQ-L1-Hxn"/>
+                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="top" secondItem="iar-iJ-qno" secondAttribute="bottom" constant="20" id="tL5-dO-hU2"/>
+                            <constraint firstItem="iar-iJ-qno" firstAttribute="top" secondItem="2YM-A1-7DB" secondAttribute="bottom" constant="20" id="z0T-dA-CEa"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6EI-ee-WFY"/>
                     </view>
@@ -160,7 +171,7 @@ Game</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xd5-Iu-lYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="799" y="138"/>
+            <point key="canvasLocation" x="798.55072463768124" y="137.94642857142856"/>
         </scene>
     </scenes>
 </document>

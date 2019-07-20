@@ -17,26 +17,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaZ-aF-WyW">
-                                <rect key="frame" x="98" y="129" width="218" height="100.5"/>
+                                <rect key="frame" x="85.5" y="122" width="243" height="114.5"/>
                                 <string key="text">The Ginners
 Game</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGF-LC-QSO">
-                                <rect key="frame" x="169.5" y="474" width="75" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <state key="normal" title="Medium">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="mediumTapped:" destination="Jdl-m1-Abl" eventType="touchUpInside" id="SJd-p4-lmM"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1VJ-aB-XLJ">
-                                <rect key="frame" x="185" y="416" width="44" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <rect key="frame" x="178.5" y="382.5" width="57" height="47"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="30"/>
                                 <state key="normal" title="Easy">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -45,8 +35,8 @@ Game</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pg-dx-bdQ">
-                                <rect key="frame" x="20" y="814" width="116" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <rect key="frame" x="20" y="805" width="153" height="47"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="30"/>
                                 <state key="normal" title="Leaderboard">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -55,8 +45,8 @@ Game</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GXm-fF-jCt">
-                                <rect key="frame" x="185" y="532" width="44" height="38"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <rect key="frame" x="178" y="469.5" width="58" height="47"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="30"/>
                                 <state key="normal" title="Hard">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -67,16 +57,14 @@ Game</string>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="GXm-fF-jCt" firstAttribute="top" secondItem="mGF-LC-QSO" secondAttribute="bottom" constant="20" id="9ba-Eb-e7I"/>
+                            <constraint firstItem="GXm-fF-jCt" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="1.1" id="AfJ-9h-s2E"/>
                             <constraint firstItem="xaZ-aF-WyW" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="PzK-yw-SuC"/>
+                            <constraint firstItem="GXm-fF-jCt" firstAttribute="top" secondItem="1VJ-aB-XLJ" secondAttribute="bottom" constant="40" id="VCH-DN-SOQ"/>
                             <constraint firstItem="7pg-dx-bdQ" firstAttribute="leading" secondItem="MeR-o0-xtf" secondAttribute="leading" constant="20" id="Xyd-Dr-ead"/>
-                            <constraint firstItem="mGF-LC-QSO" firstAttribute="top" secondItem="1VJ-aB-XLJ" secondAttribute="bottom" constant="20" id="bwv-E3-QHn"/>
-                            <constraint firstItem="mGF-LC-QSO" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="1.1" id="hGG-Hc-JSP"/>
-                            <constraint firstItem="1VJ-aB-XLJ" firstAttribute="centerX" secondItem="mGF-LC-QSO" secondAttribute="centerX" id="jPn-B7-HXa"/>
                             <constraint firstItem="GXm-fF-jCt" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="kzF-xz-hAJ"/>
                             <constraint firstItem="xaZ-aF-WyW" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="0.4" id="n5z-QR-vOF"/>
                             <constraint firstItem="MeR-o0-xtf" firstAttribute="bottom" secondItem="7pg-dx-bdQ" secondAttribute="bottom" constant="10" id="s3M-jn-8Dx"/>
-                            <constraint firstItem="mGF-LC-QSO" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="zUv-ti-F8h"/>
+                            <constraint firstItem="1VJ-aB-XLJ" firstAttribute="centerX" secondItem="GXm-fF-jCt" secondAttribute="centerX" id="yyF-Tm-Bgj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MeR-o0-xtf"/>
                     </view>
@@ -109,30 +97,14 @@ Game</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YM-A1-7DB">
-                                <rect key="frame" x="93" y="153.5" width="228" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTr-Qt-DPm">
-                                <rect key="frame" x="95" y="275.5" width="224" height="310.5"/>
-                                <string key="text">1. User Name One
-2. User Name Two
-3. User Name Three
-4. User Name Four
-5. User Name Five
-6. User Name Six
-7. User Name Seven
-8. User Name Eight
-9. User Name Nine
-10. User Name Ten</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <rect key="frame" x="79.5" y="150.5" width="255" height="57.5"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIE-TM-MB6">
-                                <rect key="frame" x="177" y="696.5" width="60" height="41"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <rect key="frame" x="172.5" y="738" width="69" height="47"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="30"/>
                                 <state key="normal" title="Close">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -141,7 +113,7 @@ Game</string>
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iar-iJ-qno">
-                                <rect key="frame" x="93" y="224.5" width="228" height="32"/>
+                                <rect key="frame" x="79.5" y="228" width="255" height="32"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <segments>
                                     <segment title="Local"/>
@@ -151,25 +123,73 @@ Game</string>
                                     <action selector="leaderboardRegionValueChanged:" destination="5BS-7V-DZ1" eventType="valueChanged" id="SO4-Xh-jEq"/>
                                 </connections>
                             </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7pZ-iU-eqa">
+                                <rect key="frame" x="20.5" y="310.5" width="373" height="275"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTr-Qt-DPm">
+                                        <rect key="frame" x="0.0" y="0.0" width="169" height="275"/>
+                                        <string key="text">1. User Name One
+2. User Name Two
+3. User Name Three
+4. User Name Four
+5. User Name Five
+6. User Name Six
+7. User Name Seven
+8. User Name Eight
+9. User Name Nine
+10. User Name Ten</string>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YhL-RL-LWM">
+                                        <rect key="frame" x="209" y="0.0" width="164" height="275"/>
+                                        <string key="text">1. User Name One
+2. User Name Two
+3. User Name Three
+4. User Name Four
+5. User Name Five
+6. User Name Six
+7. User Name Seven
+8. User Name Eight
+9. User Name Nine
+10. User Ten with a very long name</string>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="WTr-Qt-DPm" firstAttribute="top" secondItem="7pZ-iU-eqa" secondAttribute="top" id="6N4-aT-bIU"/>
+                                    <constraint firstItem="YhL-RL-LWM" firstAttribute="leading" secondItem="WTr-Qt-DPm" secondAttribute="trailing" constant="40" id="6U7-uu-S0m"/>
+                                    <constraint firstAttribute="bottom" secondItem="WTr-Qt-DPm" secondAttribute="bottom" id="EaP-yA-p4k"/>
+                                    <constraint firstItem="WTr-Qt-DPm" firstAttribute="leading" secondItem="7pZ-iU-eqa" secondAttribute="leading" id="MCN-Ud-tM9"/>
+                                    <constraint firstAttribute="bottom" secondItem="YhL-RL-LWM" secondAttribute="bottom" id="cu0-FK-vzW"/>
+                                    <constraint firstAttribute="trailing" secondItem="YhL-RL-LWM" secondAttribute="trailing" id="elz-ha-KDY"/>
+                                    <constraint firstItem="YhL-RL-LWM" firstAttribute="top" secondItem="7pZ-iU-eqa" secondAttribute="top" id="t7K-4M-yXf"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6EI-ee-WFY" secondAttribute="leading" constant="20" id="3iA-F7-oqW"/>
+                            <constraint firstItem="7pZ-iU-eqa" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" id="0df-H1-8Ef"/>
                             <constraint firstItem="XIE-TM-MB6" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="6Dw-mb-zck"/>
+                            <constraint firstItem="7pZ-iU-eqa" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="Ah8-g7-rey"/>
                             <constraint firstItem="iar-iJ-qno" firstAttribute="width" secondItem="2YM-A1-7DB" secondAttribute="width" id="Bia-RM-JaX"/>
-                            <constraint firstItem="6EI-ee-WFY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTr-Qt-DPm" secondAttribute="trailing" constant="20" id="ENE-6U-9qY"/>
-                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="Iqg-pI-kB5"/>
+                            <constraint firstItem="iar-iJ-qno" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="CJ0-qi-Eow"/>
                             <constraint firstItem="2YM-A1-7DB" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="0.4" id="Sc5-Hg-Wt5"/>
+                            <constraint firstItem="7pZ-iU-eqa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6EI-ee-WFY" secondAttribute="leading" constant="20" id="Uxm-Ev-2O7"/>
                             <constraint firstItem="2YM-A1-7DB" firstAttribute="centerX" secondItem="3bG-T4-THs" secondAttribute="centerX" id="dYK-lp-wqk"/>
-                            <constraint firstItem="iar-iJ-qno" firstAttribute="centerX" secondItem="WTr-Qt-DPm" secondAttribute="centerX" id="fMe-Sl-rpR"/>
-                            <constraint firstItem="XIE-TM-MB6" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="1.6" id="oVQ-L1-Hxn"/>
-                            <constraint firstItem="WTr-Qt-DPm" firstAttribute="top" secondItem="iar-iJ-qno" secondAttribute="bottom" constant="20" id="tL5-dO-hU2"/>
+                            <constraint firstItem="XIE-TM-MB6" firstAttribute="centerY" secondItem="3bG-T4-THs" secondAttribute="centerY" multiplier="1.7" id="oVQ-L1-Hxn"/>
+                            <constraint firstItem="6EI-ee-WFY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7pZ-iU-eqa" secondAttribute="trailing" constant="20" id="uJB-Zt-FNA"/>
                             <constraint firstItem="iar-iJ-qno" firstAttribute="top" secondItem="2YM-A1-7DB" secondAttribute="bottom" constant="20" id="z0T-dA-CEa"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6EI-ee-WFY"/>
                     </view>
                     <connections>
-                        <outlet property="leaderboardLabel" destination="WTr-Qt-DPm" id="CWX-Lq-9vW"/>
+                        <outlet property="easyLeaderboard" destination="WTr-Qt-DPm" id="WbB-zq-DlR"/>
+                        <outlet property="hardLeaderboard" destination="YhL-RL-LWM" id="rWH-Qo-ENR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xd5-Iu-lYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

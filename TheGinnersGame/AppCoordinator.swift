@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AppCoordinator: NSObject {
     let window: UIWindow
@@ -20,13 +21,16 @@ class AppCoordinator: NSObject {
         let introVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "IntroViewController") as! IntroViewController
         introVC.coordinator = self
         self.window.rootViewController = introVC
+        Firebase.Analytics.setScreenName("Intro Screen", screenClass: "IntroViewController")
     }
     
-    func showGameView(difficulty: LevelDifficulty) {
+    func showGameView(difficulty: GameDifficulty) {
         let gameVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
         gameVC.coordinator = self
+        gameVC.gameDifficulty = difficulty
         gameVC.storage = self.storage
         self.window.rootViewController = gameVC
+        Firebase.Analytics.setScreenName("Game Screen \(difficulty.toString())", screenClass: "GameViewController")
     }
     
     func showLeaderboardView() {
@@ -34,5 +38,6 @@ class AppCoordinator: NSObject {
         leaderboardVC.coordinator = self
         leaderboardVC.storage = self.storage
         self.window.rootViewController = leaderboardVC
+        Firebase.Analytics.setScreenName("Leaderboard Screen", screenClass: "GameViewController")
     }
 }

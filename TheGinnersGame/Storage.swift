@@ -18,25 +18,47 @@ class Storage: NSObject {
             return UserDefaults.standard.string(forKey: "Username")
         }
     }
-    private(set) var localLeaderboard: [Score] {
+    private(set) var localLeaderboardEasy: [Score] {
         set(new) {
             if let data = self.archiveObject(new) {
-                UserDefaults.standard.set(data, forKey: "LocalLeaderboard")
+                UserDefaults.standard.set(data, forKey: "LocalLeaderboardEasy")
             }
         }
         get {
-            guard let data = UserDefaults.standard.object(forKey: "LocalLeaderboard") as? Data else { return [] }
+            guard let data = UserDefaults.standard.object(forKey: "LocalLeaderboardEasy") as? Data else { return [] }
             return self.unarchiveData(type: [Score].self, data: data) ?? []
         }
     }
-    private(set) var globalLeaderboard: [Score] {
+    private(set) var localLeaderboardHard: [Score] {
         set(new) {
             if let data = self.archiveObject(new) {
-                UserDefaults.standard.set(data, forKey: "GloablLeaderboard")
+                UserDefaults.standard.set(data, forKey: "LocalLeaderboardHard")
             }
         }
         get {
-            guard let data = UserDefaults.standard.object(forKey: "GloablLeaderboard") as? Data else { return [] }
+            guard let data = UserDefaults.standard.object(forKey: "LocalLeaderboardHard") as? Data else { return [] }
+            return self.unarchiveData(type: [Score].self, data: data) ?? []
+        }
+    }
+    private(set) var globalLeaderboardEasy: [Score] {
+        set(new) {
+            if let data = self.archiveObject(new) {
+                UserDefaults.standard.set(data, forKey: "GloablLeaderboardEasy")
+            }
+        }
+        get {
+            guard let data = UserDefaults.standard.object(forKey: "GloablLeaderboardEasy") as? Data else { return [] }
+            return self.unarchiveData(type: [Score].self, data: data) ?? []
+        }
+    }
+    private(set) var globalLeaderboardHard: [Score] {
+        set(new) {
+            if let data = self.archiveObject(new) {
+                UserDefaults.standard.set(data, forKey: "GloablLeaderboardHard")
+            }
+        }
+        get {
+            guard let data = UserDefaults.standard.object(forKey: "GloablLeaderboardHard") as? Data else { return [] }
             return self.unarchiveData(type: [Score].self, data: data) ?? []
         }
     }
@@ -44,22 +66,35 @@ class Storage: NSObject {
     override init() {
         super.init()
         
-        self.globalLeaderboard = []
-        self.firebaseStorage.observeLeaderboard { (newScore) in
+        self.globalLeaderboardEasy = []
+        self.globalLeaderboardHard = []
+        self.firebaseStorage.observeEasyLeaderboard { (newScore) in
             guard let newScore = newScore else { return }
-            self.globalLeaderboard.append(newScore)
-            self.globalLeaderboard.sort(by: {$0 > $1})
+            self.globalLeaderboardEasy.append(newScore)
+            self.globalLeaderboardEasy.sort(by: {$0 > $1})
+        }
+        self.firebaseStorage.observeHardLeaderboard { (newScore) in
+            guard let newScore = newScore else { return }
+            self.globalLeaderboardHard.append(newScore)
+            self.globalLeaderboardHard.sort(by: {$0 > $1})
         }
     }
     
-    func saveScore(_ score: Int) {
+    func saveScore(_ score: Int, difficulty: GameDifficulty) {
         guard let username = username else { return }
         let scoreModel = Score(username: username, score: score)
+        
         // Add locally
-        self.localLeaderboard.append(scoreModel)
-        self.localLeaderboard.sort(by: {$0 > $1})
+        switch difficulty {
+        case .easy:
+            self.localLeaderboardEasy.append(scoreModel)
+            self.localLeaderboardEasy.sort(by: {$0 > $1})
+        case .hard:
+            self.localLeaderboardHard.append(scoreModel)
+            self.localLeaderboardHard.sort(by: {$0 > $1})
+        }
         // Add globally
-        self.firebaseStorage.saveScore(scoreModel)
+        self.firebaseStorage.saveScore(scoreModel, difficulty: difficulty)
     }
     
     private func archiveObject<T>(_ object: T) -> Data? where T : Encodable {

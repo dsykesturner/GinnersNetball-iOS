@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
 
     weak var coordinator: AppCoordinator!
     var storage: Storage!
-    var levelDifficulty: LevelDifficulty?
+    var gameDifficulty: GameDifficulty?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
             // Setup game scene
             let scene = GameScene(size: view.frame.size)
             scene.scaleMode = .aspectFill
-            scene.difficulty = self.levelDifficulty ?? .easy
+            scene.difficulty = self.gameDifficulty ?? .easy
             scene.gameDelegate = self
             
             // Setup view
@@ -49,7 +49,7 @@ extension GameViewController: GameSceneDelegate {
         self.coordinator.showIntroView()
     }
     
-    func saveNewScore(_ score: Int) {
+    func saveNewScore(_ score: Int, difficulty: GameDifficulty) {
         // Attempt to get a username
         if self.storage.username == nil {
             let requestUsername = UIAlertController(title: "Save To Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
@@ -61,7 +61,7 @@ extension GameViewController: GameSceneDelegate {
                     let newUsername = textField.text,
                     newUsername.count > 0 else { return }
                 self.storage.username = newUsername
-                self.saveNewScore(score)
+                self.saveNewScore(score, difficulty: difficulty)
             }
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             requestUsername.addAction(save)
@@ -70,6 +70,6 @@ extension GameViewController: GameSceneDelegate {
             return
         }
         // Save the score if there is a username
-        self.storage.saveScore(score)
+        self.storage.saveScore(score, difficulty: difficulty)
     }
 }

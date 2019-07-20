@@ -38,10 +38,6 @@ class IntroViewController: UIViewController {
         self.coordinator.showGameView(difficulty: .easy)
     }
     
-    @IBAction func mediumTapped(_ sender: Any) {
-        self.coordinator.showGameView(difficulty: .medium)
-    }
-    
     @IBAction func hardTapped(_ sender: Any) {
         self.coordinator.showGameView(difficulty: .hard)
     }

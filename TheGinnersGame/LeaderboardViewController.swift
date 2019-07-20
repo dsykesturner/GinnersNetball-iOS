@@ -10,7 +10,8 @@ import UIKit
 
 class LeaderboardViewController: UIViewController {
 
-    @IBOutlet weak var leaderboardLabel: UILabel!
+    @IBOutlet weak var easyLeaderboard: UILabel!
+    @IBOutlet weak var hardLeaderboard: UILabel!
     
     weak var coordinator: AppCoordinator!
     var storage: Storage!
@@ -21,28 +22,41 @@ class LeaderboardViewController: UIViewController {
     }
     
     func loadLocalLeaderboard() {
-        self.loadLeaderboard(scores: self.storage.localLeaderboard)
+        self.loadLeaderboard(easyScores: self.storage.localLeaderboardEasy, hardScores: self.storage.localLeaderboardHard)
     }
     
     func loadGlobalLeaderboard() {
-        self.loadLeaderboard(scores: self.storage.globalLeaderboard)
+        self.loadLeaderboard(easyScores: self.storage.globalLeaderboardEasy, hardScores: self.storage.globalLeaderboardHard)
     }
     
-    func loadLeaderboard(scores: [Score] = []) {
-        self.leaderboardLabel.text = nil
-        
-        var count = 1
-        for score in scores {
-            if self.leaderboardLabel.text == nil {
-                self.leaderboardLabel.text = "\(score.score) \(score.username)"
+    func loadLeaderboard(easyScores: [Score] = [], hardScores: [Score] = []) {
+        // Load easy scores
+        self.easyLeaderboard.text = nil
+        for i in 0..<10 {
+            if i < easyScores.count {
+                let score = easyScores[i]
+                if self.easyLeaderboard.text == nil {
+                    self.easyLeaderboard.text = "\(score.score)\t\(score.username)"
+                } else {
+                    self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n\(score.score)\t\(score.username)"
+                }
             } else {
-                self.leaderboardLabel.text = "\(self.leaderboardLabel.text!)\n\(score.score) \(score.username)"
+                self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n"
             }
-            
-            count += 1
-            // Just show the top 10 scores
-            if count == 11 {
-                break
+        }
+        
+        // Load hard scores
+        self.hardLeaderboard.text = nil
+        for i in 0..<10 {
+            if i < hardScores.count {
+                let score = easyScores[i]
+                if self.hardLeaderboard.text == nil {
+                    self.hardLeaderboard.text = "\(score.score)\t\(score.username)"
+                } else {
+                    self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n\(score.score)\t\(score.username)"
+                }
+            } else {
+                self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n"
             }
         }
     }

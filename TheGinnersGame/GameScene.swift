@@ -28,10 +28,18 @@ struct ballSizes {
     static let ballWidth:CGFloat = 50
 }
 
-enum LevelDifficulty: Double {
+enum GameDifficulty: Double {
     case easy = 1.1
-    case medium = 1.3
-    case hard = 1.6
+    case hard = 1.3
+    
+    func toString() -> String {
+        switch self {
+        case .easy:
+            return "Easy"
+        case .hard:
+            return "Hard"
+        }
+    }
 }
 
 enum GameState {
@@ -42,7 +50,7 @@ enum GameState {
 
 protocol GameSceneDelegate:class {
     func quitGame()
-    func saveNewScore(_ score: Int)
+    func saveNewScore(_ score: Int, difficulty: GameDifficulty)
 }
 
 class GameScene: SKScene {
@@ -61,7 +69,7 @@ class GameScene: SKScene {
     weak var gameDelegate: GameSceneDelegate!
     
     var state: GameState = .started
-    var difficulty: LevelDifficulty = .easy
+    var difficulty: GameDifficulty = .easy
     var level: Int = 1
     var score: Int = 0 {
         didSet {
@@ -230,7 +238,7 @@ class GameScene: SKScene {
     
     func showLevelNode() {
         // Display the level node with the current level
-        self.levelNode = SKLabelNode(text: "Level \(self.level)")
+        self.levelNode.text = "Level \(self.level)"
         self.levelNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1),
             SKAction.wait(forDuration: 2),
@@ -399,7 +407,7 @@ class GameScene: SKScene {
         self.quitButton.run(fadeInAction)
         
         // Save the score to the leaderboard
-        self.gameDelegate.saveNewScore(self.score)
+        self.gameDelegate.saveNewScore(self.score, difficulty: self.difficulty)
     }
 }
 

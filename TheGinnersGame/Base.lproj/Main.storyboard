@@ -147,6 +147,9 @@ Game</string>
                                     <segment title="Local"/>
                                     <segment title="Global"/>
                                 </segments>
+                                <connections>
+                                    <action selector="leaderboardRegionValueChanged:" destination="5BS-7V-DZ1" eventType="valueChanged" id="SO4-Xh-jEq"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

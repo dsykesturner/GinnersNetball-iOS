@@ -51,7 +51,7 @@ extension GameViewController: GameSceneDelegate {
     
     func saveNewScore(_ score: Int) {
         // Attempt to get a username
-        guard let username = self.storage.username else {
+        if self.storage.username == nil {
             let requestUsername = UIAlertController(title: "Save To Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
             requestUsername.addTextField { (textField) in
                 textField.placeholder = "Username"
@@ -70,10 +70,6 @@ extension GameViewController: GameSceneDelegate {
             return
         }
         // Save the score if there is a username
-        let scoreModel = Score(username: username, score: score)
-        var leaderboard = self.storage.localLeaderboard
-        leaderboard.append(scoreModel)
-        leaderboard.sort(by: {$0 > $1})
-        self.storage.localLeaderboard = leaderboard
+        self.storage.saveScore(score)
     }
 }

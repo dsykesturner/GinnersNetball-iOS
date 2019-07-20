@@ -6,9 +6,10 @@
 //  Copyright © 2019 Daniel Sykes-Turner. All rights reserved.
 //
 
-import Foundation
+import Firebase
 
-struct Storage {
+class Storage: NSObject {
+    private var firebaseStorage = FirebaseStorage()
     var username: String? {
         set(new) {
             UserDefaults.standard.set(new, forKey: "Username")
@@ -17,7 +18,7 @@ struct Storage {
             return UserDefaults.standard.string(forKey: "Username")
         }
     }
-    var localLeaderboard: [Score] {
+    private(set) var localLeaderboard: [Score] {
         set(new) {
             if let data = self.archiveObject(new) {
                 UserDefaults.standard.set(data, forKey: "LocalLeaderboard")
@@ -27,6 +28,38 @@ struct Storage {
             guard let data = UserDefaults.standard.object(forKey: "LocalLeaderboard") as? Data else { return [] }
             return self.unarchiveData(type: [Score].self, data: data) ?? []
         }
+    }
+    private(set) var globalLeaderboard: [Score] {
+        set(new) {
+            if let data = self.archiveObject(new) {
+                UserDefaults.standard.set(data, forKey: "GloablLeaderboard")
+            }
+        }
+        get {
+            guard let data = UserDefaults.standard.object(forKey: "GloablLeaderboard") as? Data else { return [] }
+            return self.unarchiveData(type: [Score].self, data: data) ?? []
+        }
+    }
+    
+    override init() {
+        super.init()
+        
+        self.globalLeaderboard = []
+        self.firebaseStorage.observeLeaderboard { (newScore) in
+            guard let newScore = newScore else { return }
+            self.globalLeaderboard.append(newScore)
+            self.globalLeaderboard.sort(by: {$0 > $1})
+        }
+    }
+    
+    func saveScore(_ score: Int) {
+        guard let username = username else { return }
+        let scoreModel = Score(username: username, score: score)
+        // Add locally
+        self.localLeaderboard.append(scoreModel)
+        self.localLeaderboard.sort(by: {$0 > $1})
+        // Add globally
+        self.firebaseStorage.saveScore(scoreModel)
     }
     
     private func archiveObject<T>(_ object: T) -> Data? where T : Encodable {
@@ -46,23 +79,5 @@ struct Storage {
             print(error)
             return nil
         }
-    }
-}
-
-struct Score: Comparable, Codable {
-    var username: String
-    var score: Int
-    
-    static func < (lhs: Score, rhs: Score) -> Bool {
-        return lhs.score < rhs.score
-    }
-    static func <= (lhs: Score, rhs: Score) -> Bool {
-        return lhs.score <= rhs.score
-    }
-    static func >= (lhs: Score, rhs: Score) -> Bool {
-        return lhs.score >= rhs.score
-    }
-    static func > (lhs: Score, rhs: Score) -> Bool {
-        return lhs.score > rhs.score
     }
 }

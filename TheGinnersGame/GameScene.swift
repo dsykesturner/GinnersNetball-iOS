@@ -30,7 +30,7 @@ struct ballSizes {
 
 enum GameDifficulty: Double {
     case easy = 1.1
-    case hard = 1.3
+    case hard = 1.25
     
     func toString() -> String {
         switch self {

@@ -21,6 +21,10 @@ class LeaderboardViewController: UIViewController {
         self.loadLocalLeaderboard()
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     func loadLocalLeaderboard() {
         self.loadLeaderboard(easyScores: self.storage.localLeaderboardEasy, hardScores: self.storage.localLeaderboardHard)
     }
@@ -36,12 +40,16 @@ class LeaderboardViewController: UIViewController {
             if i < easyScores.count {
                 let score = easyScores[i]
                 if self.easyLeaderboard.text == nil {
-                    self.easyLeaderboard.text = "\(score.score)\t\(score.username)"
+                    self.easyLeaderboard.text = self.formatScore(score)
                 } else {
-                    self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n\(score.score)\t\(score.username)"
+                    self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n\(self.formatScore(score))"
                 }
             } else {
-                self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n"
+                if self.easyLeaderboard.text == nil {
+                    self.easyLeaderboard.text = ""
+                } else {
+                    self.easyLeaderboard.text = "\(self.easyLeaderboard.text!)\n"
+                }
             }
         }
         
@@ -49,15 +57,27 @@ class LeaderboardViewController: UIViewController {
         self.hardLeaderboard.text = nil
         for i in 0..<10 {
             if i < hardScores.count {
-                let score = easyScores[i]
+                let score = hardScores[i]
                 if self.hardLeaderboard.text == nil {
-                    self.hardLeaderboard.text = "\(score.score)\t\(score.username)"
+                    self.hardLeaderboard.text = self.formatScore(score)
                 } else {
-                    self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n\(score.score)\t\(score.username)"
+                    self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n\(self.formatScore(score))"
                 }
             } else {
-                self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n"
+                if self.hardLeaderboard.text == nil {
+                    self.hardLeaderboard.text = ""
+                } else {
+                    self.hardLeaderboard.text = "\(self.hardLeaderboard.text!)\n"
+                }
             }
+        }
+    }
+    
+    func formatScore(_ score: Score) -> String {
+        if score.score >= 100 {
+            return "\(score.score)\t\(score.username)"
+        } else {
+            return "\(score.score)\t\t\(score.username)"
         }
     }
     

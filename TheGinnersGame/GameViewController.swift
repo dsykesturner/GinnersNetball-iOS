@@ -23,8 +23,12 @@ class GameViewController: UIViewController {
             // Setup game scene
             let scene = GameScene(size: view.frame.size)
             scene.scaleMode = .aspectFill
-            scene.difficulty = self.gameDifficulty ?? .easy
             scene.gameDelegate = self
+            if (!self.storage.hasPlayedPracticeGame) {
+                scene.difficulty = .practice
+            } else {
+                scene.difficulty = self.gameDifficulty ?? .easy
+            }
             
             // Setup view
             view.presentScene(scene)
@@ -71,5 +75,9 @@ extension GameViewController: GameSceneDelegate {
         }
         // Save the score if there is a username
         self.storage.saveScore(score, difficulty: difficulty)
+    }
+    
+    func finishedPracticeGame() {
+        self.storage.hasPlayedPracticeGame = true
     }
 }

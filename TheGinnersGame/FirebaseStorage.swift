@@ -38,6 +38,9 @@ class FirebaseStorage: NSObject {
     
     func saveScore(_ score: Score, difficulty: GameDifficulty) {
         switch difficulty {
+        case .practice:
+            // Don't save practice scores
+            break
         case .easy:
             let scoreRef = self.easyLeaderboardRef.childByAutoId()
             scoreRef.setValue(score.toAnyObject())

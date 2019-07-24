@@ -10,6 +10,7 @@ import Firebase
 
 class Storage: NSObject {
     private var firebaseStorage = FirebaseStorage()
+    // User
     var username: String? {
         set(new) {
             UserDefaults.standard.set(new, forKey: "Username")
@@ -18,6 +19,7 @@ class Storage: NSObject {
             return UserDefaults.standard.string(forKey: "Username")
         }
     }
+    // Leaderboards
     private(set) var localLeaderboardEasy: [Score] {
         set(new) {
             if let data = self.archiveObject(new) {
@@ -62,6 +64,24 @@ class Storage: NSObject {
             return self.unarchiveData(type: [Score].self, data: data) ?? []
         }
     }
+    // Game progress
+    var hasPlayedPracticeGame: Bool {
+        set(new) {
+            UserDefaults.standard.set(new, forKey: "HasPlayedPracticeGame")
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: "HasPlayedPracticeGame")
+        }
+    }
+    var hasUnlockedHardMode: Bool {
+        set(new) {
+            UserDefaults.standard.set(new, forKey: "HasUnlockedHardMode")
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: "HasUnlockedHardMode")
+        }
+    }
+    
     
     override init() {
         super.init()
@@ -86,6 +106,9 @@ class Storage: NSObject {
         
         // Add locally
         switch difficulty {
+        case .practice:
+            // Don't save practice scores
+            break
         case .easy:
             self.localLeaderboardEasy.append(scoreModel)
             self.localLeaderboardEasy.sort(by: {$0 > $1})

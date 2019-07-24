@@ -130,7 +130,7 @@ class GameScene: SKScene {
     
     func setupLevelNode() {
         let x = self.size.width / 2
-        let y = self.scoreNode.position.y + self.scoreNode.frame.height + 10
+        let y = self.scoreNode.position.y - self.scoreNode.frame.height - 10
         
         self.levelNode = SKLabelNode()
         self.levelNode.alpha = 0.0
@@ -153,6 +153,7 @@ class GameScene: SKScene {
         let playAgainY = self.size.height * 0.4
         
         self.playAgainButton = SKLabelNode(text: "Play Again")
+        self.playAgainButton.fontName = "HelveticaNeue-Medium"
         self.playAgainButton.position = CGPoint(x: x, y: playAgainY)
         self.playAgainButton.alpha = 0
         
@@ -161,6 +162,7 @@ class GameScene: SKScene {
         let quitY = self.playAgainButton.position.y - self.playAgainButton.frame.height - 20
         
         self.quitButton = SKLabelNode(text: "Quit")
+        self.quitButton.fontName = "HelveticaNeue-Medium"
         self.quitButton.position = CGPoint(x: x, y: quitY)
         self.quitButton.alpha = 0
         
@@ -275,7 +277,7 @@ class GameScene: SKScene {
         self.levelNode.text = "Level \(self.level)"
         self.levelNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1),
-            SKAction.wait(forDuration: 2),
+            SKAction.wait(forDuration: 1),
             SKAction.fadeOut(withDuration: 1)
         ]))
     }

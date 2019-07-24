@@ -20,6 +20,7 @@ class AppCoordinator: NSObject {
     func showIntroView() {
         let introVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "IntroViewController") as! IntroViewController
         introVC.coordinator = self
+        introVC.storage = self.storage
         self.window.rootViewController = introVC
         Firebase.Analytics.setScreenName("Intro Screen", screenClass: "IntroViewController")
     }

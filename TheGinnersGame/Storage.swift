@@ -81,6 +81,14 @@ class Storage: NSObject {
             return UserDefaults.standard.bool(forKey: "HasUnlockedHardMode")
         }
     }
+    var hasShownPromptForUsername: Bool {
+        set(new) {
+            UserDefaults.standard.set(new, forKey: "HasShownPromptForUsername")
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: "HasShownPromptForUsername")
+        }
+    }
     
     
     override init() {

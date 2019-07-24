@@ -12,7 +12,9 @@ import GameplayKit
 
 class IntroViewController: UIViewController {
     
+    @IBOutlet weak var hardButton: UIButton!
     weak var coordinator: AppCoordinator!
+    var storage: Storage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,10 @@ class IntroViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+        
+        // Lock/unlock hard mode
+        self.hardButton.alpha = self.storage.hasUnlockedHardMode ? 1.0 : 0.3
+            
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -39,7 +45,13 @@ class IntroViewController: UIViewController {
     }
     
     @IBAction func hardTapped(_ sender: Any) {
-        self.coordinator.showGameView(difficulty: .hard)
+        if self.storage.hasUnlockedHardMode {
+            self.coordinator.showGameView(difficulty: .hard)
+        } else {
+            let alertView = UIAlertController(title: "Hard Mode Locked", message: "Score over 100 points to unlock hard mode", preferredStyle: .alert)
+            alertView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alertView, animated: true, completion: nil)
+        }
     }
     
     @IBAction func leaderboardTapped(_ sender: Any) {

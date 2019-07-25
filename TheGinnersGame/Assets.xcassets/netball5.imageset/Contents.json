@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "netball5.png",
+      "filename" : "netballs-05@1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "netballs-05@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "netballs-05@3x.png",
       "scale" : "3x"
     }
   ],

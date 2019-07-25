@@ -145,7 +145,11 @@ class GameScene: SKScene {
         let y = self.size.height * 0.8
         self.scoreNode = SKLabelNode(text: "0")
         self.scoreNode.alpha = 0.0
-        self.scoreNode.numberOfLines = 0
+        if #available(iOS 11.0, *) {
+            self.scoreNode.numberOfLines = 0
+        } else {
+            // TODO: handle < iOS 11
+        }
         self.scoreNode.position = CGPoint(x: x, y: y)
         self.scoreNode.zPosition = layer.text
         self.addChild(self.scoreNode!)
@@ -169,7 +173,11 @@ class GameScene: SKScene {
 
         self.gameStateNode = SKLabelNode()
         self.gameStateNode.position = CGPoint(x: x, y: gameStateY)
-        self.gameStateNode.numberOfLines = 0
+        if #available(iOS 11.0, *) {
+            self.gameStateNode.numberOfLines = 0
+        } else {
+            // TODO: handle < iOS 11
+        }
         self.gameStateNode.alpha = 0
         self.gameStateNode.zPosition = layer.text
         
@@ -323,7 +331,12 @@ class GameScene: SKScene {
         let range = NSRange(location: 0, length: text.count)
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
         attrString.addAttributes([NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font : UIFont(name: "HelveticaNeue-UltraLight", size: 32)!], range: range)
-        self.gameStateNode.attributedText = attrString
+        if #available(iOS 11.0, *) {
+            self.gameStateNode.attributedText = attrString
+        } else {
+            // TODO: handle < iOS 11
+            self.gameStateNode.text = text
+        }
     }
     
     // MARK: Game actions

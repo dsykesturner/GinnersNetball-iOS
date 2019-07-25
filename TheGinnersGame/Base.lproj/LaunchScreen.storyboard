@@ -18,18 +18,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ginners-logo" translatesAutoresizingMaskIntoConstraints="NO" id="aQv-ug-2Zw">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ginners-logo-est" translatesAutoresizingMaskIntoConstraints="NO" id="lYJ-KU-CBI">
                                 <rect key="frame" x="47" y="104" width="320" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="Wjd-NE-WwJ"/>
-                                    <constraint firstAttribute="width" constant="320" id="uc5-hQ-oRQ"/>
+                                    <constraint firstAttribute="width" constant="320" id="7uA-cz-FFW"/>
+                                    <constraint firstAttribute="height" constant="150" id="98x-1Z-Y0Q"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="aQv-ug-2Zw" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="JI3-bZ-Oh1"/>
-                            <constraint firstItem="aQv-ug-2Zw" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.4" id="Uyp-8E-bNp"/>
+                            <constraint firstItem="lYJ-KU-CBI" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4zK-gK-nyh"/>
+                            <constraint firstItem="lYJ-KU-CBI" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.4" id="Aga-39-eE9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ginners-logo" width="925" height="350"/>
+        <image name="ginners-logo-est" width="350" height="132.5"/>
     </resources>
 </document>

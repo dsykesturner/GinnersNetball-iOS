@@ -56,10 +56,11 @@ class GameViewController: UIViewController {
         self.present(alertView, animated: true, completion: nil)
     }
     
-    func requestForUsername(closed: (() -> Void)?) {
+    func requestForUsername(didRetry: Bool, closed: (() -> Void)?) {
         self.storage.hasShownPromptForUsername = true
         // Ask for a username to save the score
-        let requestUsername = UIAlertController(title: "Save To Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
+        let message = didRetry ? "(enter a username of 10 characters or less)" : "Enter a username to save to the leaderboard"
+        let requestUsername = UIAlertController(title: "Save To Leaderboard", message: message, preferredStyle: .alert)
         requestUsername.addTextField { (textField) in
             textField.placeholder = "Username"
         }
@@ -67,8 +68,13 @@ class GameViewController: UIViewController {
             guard let textField = requestUsername.textFields?.first,
                 let newUsername = textField.text,
                 newUsername.count > 0 else { return }
-            self.storage.username = newUsername
-            closed?()
+            
+            if newUsername.count <= 10 {
+                self.storage.username = newUsername
+                closed?()
+            } else {
+                self.requestForUsername(didRetry: true, closed: closed)
+            }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
             closed?()
@@ -95,7 +101,7 @@ extension GameViewController: GameSceneDelegate {
         }
         // Attempt to get a username
         if self.storage.hasShownPromptForUsername == false {
-            self.requestForUsername {
+            self.requestForUsername(didRetry: false) {
                 self.saveNewScore(score, difficulty: difficulty)
             }
             return

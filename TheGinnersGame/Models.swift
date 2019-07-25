@@ -8,15 +8,6 @@
 
 import Firebase
 
-//struct User: Equatable, Codable {
-//    var id: String
-//    var username: String
-//    
-//    static func == (lhs: User, rhs: User) -> Bool {
-//        return lhs.id < rhs.id
-//    }
-//}
-
 struct ScoreList: Codable {
     var scores: [Score]
     

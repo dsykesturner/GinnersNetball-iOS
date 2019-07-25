@@ -81,10 +81,11 @@ class LeaderboardViewController: UIViewController {
         }
     }
     
-    @IBAction func updateUsernameTapped(_ sender: Any) {
+    func requestForUsername(didRetry: Bool) {
         self.storage.hasShownPromptForUsername = true
         // Ask for a username to save the score
-        let requestUsername = UIAlertController(title: "Update Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
+        let message = didRetry ? "(enter a username of 10 characters or less)" : "Enter a username to save to the leaderboard"
+        let requestUsername = UIAlertController(title: "Update Username", message: message, preferredStyle: .alert)
         requestUsername.addTextField { (textField) in
             textField.placeholder = "Username"
         }
@@ -92,12 +93,21 @@ class LeaderboardViewController: UIViewController {
             guard let textField = requestUsername.textFields?.first,
                 let newUsername = textField.text,
                 newUsername.count > 0 else { return }
-            self.storage.username = newUsername
+            
+            if newUsername.count <= 10 {
+                self.storage.username = newUsername
+            } else {
+                self.requestForUsername(didRetry: true)
+            }
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler:  nil)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         requestUsername.addAction(save)
         requestUsername.addAction(cancel)
         self.present(requestUsername, animated: true, completion: nil)
+    }
+    
+    @IBAction func updateUsernameTapped(_ sender: Any) {
+        self.requestForUsername(didRetry: false)
     }
     
     @IBAction func leaderboardRegionValueChanged(_ sender: UISegmentedControl) {

@@ -19,8 +19,6 @@ class IntroScene: SKScene {
         self.setupScenePhysics()
         self.setupAccelerometer()
         self.spawnNetballs(-1)
-        
-//        Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(removeScenePhysics), userInfo: nil, repeats: true)
     }
     
     private func setupAccelerometer() {
@@ -36,15 +34,7 @@ class IntroScene: SKScene {
                     print("Error encountered getting accelerometer data \(error)")
                 } else if let data = data {
                     DispatchQueue.main.async {
-//                        if (self.orientation == .landscapeRight) {
-//                            self.physicsWorld.gravity = CGVector(dx: -data.acceleration.y*10, dy: data.acceleration.x*10)
-//                        } else if (self.orientation == .landscapeLeft) {
-//                            self.physicsWorld.gravity = CGVector(dx: data.acceleration.y*10, dy: -data.acceleration.x*10)
-//                        }  else if (self.orientation == .portrait) {
-                            self.physicsWorld.gravity = CGVector(dx: data.acceleration.x*15, dy: data.acceleration.y*15-3)
-//                        } else if (self.orientation == .portraitUpsideDown) {
-//                            self.physicsWorld.gravity = CGVector(dx: -data.acceleration.x*10, dy: -data.acceleration.y*10)
-//                        }
+                        self.physicsWorld.gravity = CGVector(dx: data.acceleration.x*15, dy: data.acceleration.y*15-3)
                     }
                 }
             }
@@ -55,7 +45,6 @@ class IntroScene: SKScene {
     @objc
     func setupScenePhysics() {
         self.physicsWorld.contactDelegate = self
-//        self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         
         if self.physicsBody == nil {
             // Create an invisible barrier around the scene to keep the ball inside
@@ -96,8 +85,7 @@ class IntroScene: SKScene {
         ball.physicsBody = SKPhysicsBody(circleOfRadius: w/2)
         ball.physicsBody?.affectedByGravity = true
         ball.physicsBody?.categoryBitMask = pc.ball
-        ball.physicsBody?.collisionBitMask = (pc.blockEdge | pc.blockBottom | pc.ball)
-        ball.physicsBody?.contactTestBitMask = pc.blockBottom
+        ball.physicsBody?.collisionBitMask = pc.ball
         ball.physicsBody?.restitution = 0.5
         
         // Vanish after 20 seconds
@@ -111,6 +99,4 @@ class IntroScene: SKScene {
     }
 }
 
-extension IntroScene: SKPhysicsContactDelegate {
-    
-}
+extension IntroScene: SKPhysicsContactDelegate {}

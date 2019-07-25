@@ -12,9 +12,15 @@ import GameplayKit
 struct pc { // Physics Category
     static let none: UInt32 = 0x1 << 0
     static let ball: UInt32 = 0x1 << 1
-    static let blockEdge: UInt32 = 0x1 << 2
-    static let blockBottom: UInt32 = 0x1 << 3
+    static let netEdge: UInt32 = 0x1 << 2
+    static let netBase: UInt32 = 0x1 << 3
     static let boundary: UInt32 = 0x1 << 4
+}
+
+struct layer {
+    static let ball: CGFloat = 0
+    static let net: CGFloat = 1
+    static let text: CGFloat = 2
 }
 
 struct blockSizes {
@@ -22,6 +28,20 @@ struct blockSizes {
     static let bottomBlockWidth:CGFloat = 100
     static let edgeBlockHeight:CGFloat = 150
     static let edgeBlockWidth:CGFloat = 30
+}
+
+struct netSizes {
+    static let baseHeight:CGFloat = 41.0/3
+    static let baseWidth:CGFloat = 224.0/3
+    
+    static let leftSideHeight:CGFloat = 391.0/3
+    static let leftSideWidth:CGFloat = 114.0/3
+    
+    static let rightSideHeight:CGFloat = 393.0/3
+    static let rightSideWidth:CGFloat = 114.0/3
+    
+    static let netHeight:CGFloat = 450.0/3
+    static let netWidth:CGFloat = 444.0/3
 }
 
 struct ballSizes {
@@ -75,9 +95,10 @@ class GameScene: SKScene {
     var levelNode: SKLabelNode!
     var gameStateNode: SKLabelNode!
     var boundaryNode: SKShapeNode!
-    var blockNode: SKShapeNode!
-    var blockNodeL: SKShapeNode!
-    var blockNodeR: SKShapeNode!
+    var netBaseNode: SKSpriteNode!
+    var netLeftSideNode: SKSpriteNode!
+    var netRightSideNode: SKSpriteNode!
+    var netWholeNode: SKSpriteNode!
     var ballNodes: [SKSpriteNode] = []
     var playAgainButton: SKLabelNode!
     var quitButton: SKLabelNode!
@@ -113,7 +134,7 @@ class GameScene: SKScene {
         self.setupScoreNode()
         self.setupLevelNode()
         self.setupGameStateNodes()
-        self.setupBlockNode()
+        self.setupNetNodes()
         self.setupBoundaryNode()
     }
     
@@ -125,6 +146,7 @@ class GameScene: SKScene {
         self.scoreNode.alpha = 0.0
         self.scoreNode.numberOfLines = 0
         self.scoreNode.position = CGPoint(x: x, y: y)
+        self.scoreNode.zPosition = layer.text
         self.addChild(self.scoreNode!)
     }
     
@@ -135,6 +157,7 @@ class GameScene: SKScene {
         self.levelNode = SKLabelNode()
         self.levelNode.alpha = 0.0
         self.levelNode.position = CGPoint(x: x, y: y)
+        self.levelNode.zPosition = layer.text
         
         self.addChild(self.levelNode)
     }
@@ -147,6 +170,7 @@ class GameScene: SKScene {
         self.gameStateNode.position = CGPoint(x: x, y: gameStateY)
         self.gameStateNode.numberOfLines = 0
         self.gameStateNode.alpha = 0
+        self.gameStateNode.zPosition = layer.text
         
         self.addChild(self.gameStateNode)
         
@@ -156,6 +180,7 @@ class GameScene: SKScene {
         self.playAgainButton.fontName = "HelveticaNeue-Medium"
         self.playAgainButton.position = CGPoint(x: x, y: playAgainY)
         self.playAgainButton.alpha = 0
+        self.playAgainButton.zPosition = layer.text
         
         self.addChild(playAgainButton)
         
@@ -165,55 +190,61 @@ class GameScene: SKScene {
         self.quitButton.fontName = "HelveticaNeue-Medium"
         self.quitButton.position = CGPoint(x: x, y: quitY)
         self.quitButton.alpha = 0
+        self.quitButton.zPosition = layer.text
         
         self.addChild(quitButton)
     }
     
-    func setupBlockNode() {
-        // Build the bottom block
-        let bottomBlockWidth = blockSizes.bottomBlockWidth
-        let bottomBlockHeight = blockSizes.bottomBlockHeight
-        var size = CGSize(width: bottomBlockWidth, height: bottomBlockHeight)
-        let bottomBlockX = self.size.width/2
-        let bottomBlockY = CGFloat(60)
-        self.blockNode = SKShapeNode(rectOf: size)
-        self.blockNode.lineWidth = 2.5
-        self.blockNode.alpha = 0
-        self.blockNode.position = CGPoint(x: bottomBlockX, y: bottomBlockY)
-        self.blockNode.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNode.physicsBody?.isDynamic = false
-        self.blockNode.physicsBody?.categoryBitMask = pc.blockBottom
-        self.blockNode.physicsBody?.collisionBitMask = pc.none
-        self.blockNode.physicsBody?.contactTestBitMask = pc.none
+    func setupNetNodes() {
         
-        // Build the left block
-        let edgeBlockHeight = blockSizes.edgeBlockHeight
-        let edgeBlockWidth = blockSizes.edgeBlockWidth
-        size = CGSize(width: edgeBlockWidth, height: edgeBlockHeight)
-        var edgeBlockX = bottomBlockX - bottomBlockWidth/2 - edgeBlockWidth/2
-        let edgeBlockY = bottomBlockY - bottomBlockHeight/2 + edgeBlockHeight/2
-        self.blockNodeL = SKShapeNode(rectOf: size)
-        self.blockNodeL.lineWidth = 2.5
-        self.blockNodeL.alpha = 0
-        self.blockNodeL.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
-        self.blockNodeL.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNodeL.physicsBody?.isDynamic = false
-        self.blockNodeL.physicsBody?.categoryBitMask = pc.blockEdge
-        self.blockNodeL.physicsBody?.collisionBitMask = pc.ball
+        // Create the whole new node. This can't interact with anything
+        self.netWholeNode = SKSpriteNode(imageNamed: "net-whole")
+        self.netWholeNode.size = CGSize(width: netSizes.netWidth, height: netSizes.netHeight)
+        self.netWholeNode.alpha = 0
+        self.netWholeNode.zPosition = layer.net
         
-        edgeBlockX = bottomBlockX + bottomBlockWidth/2 + edgeBlockWidth/2
-        self.blockNodeR = SKShapeNode(rectOf: size)
-        self.blockNodeR.lineWidth = 2.5
-        self.blockNodeR.alpha = 0
-        self.blockNodeR.position = CGPoint(x: edgeBlockX, y: edgeBlockY)
-        self.blockNodeR.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.blockNodeR.physicsBody?.isDynamic = false
-        self.blockNodeR.physicsBody?.categoryBitMask = pc.blockEdge
-        self.blockNodeR.physicsBody?.collisionBitMask = pc.ball
+        // Create the net base. This will interact with the ball and make it vanish on contact
+        let baseTexture = SKTexture(imageNamed: "net-base")
+        self.netBaseNode = SKSpriteNode(texture: baseTexture)
+        self.netBaseNode.size = CGSize(width: netSizes.baseWidth, height: netSizes.baseHeight)
+        self.netBaseNode.alpha = 0
+        self.netBaseNode.zPosition = layer.net
+        self.netBaseNode.physicsBody = SKPhysicsBody(texture: baseTexture, alphaThreshold: 0.3, size: baseTexture.size())
+        self.netBaseNode.physicsBody?.isDynamic = false
+        self.netBaseNode.physicsBody?.categoryBitMask = pc.netBase
+        self.netBaseNode.physicsBody?.collisionBitMask = pc.none
+        self.netBaseNode.physicsBody?.contactTestBitMask = pc.none
         
-        addChild(self.blockNode)
-        addChild(self.blockNodeL)
-        addChild(self.blockNodeR)
+        
+        // Create the left side of the net. This will interact with the ball but not do anything on contact
+        let leftTexture = SKTexture(imageNamed: "net-left")
+        self.netLeftSideNode = SKSpriteNode(texture: leftTexture)
+        self.netLeftSideNode.size = CGSize(width: netSizes.leftSideWidth, height: netSizes.leftSideHeight)
+        self.netLeftSideNode.alpha = 0
+        self.netLeftSideNode.zPosition = layer.net
+        self.netLeftSideNode.physicsBody = SKPhysicsBody(texture: leftTexture, alphaThreshold: 0.3, size: leftTexture.size())
+        self.netLeftSideNode.physicsBody?.isDynamic = false
+        self.netLeftSideNode.physicsBody?.categoryBitMask = pc.netEdge
+        self.netLeftSideNode.physicsBody?.collisionBitMask = pc.ball
+
+        // Create the right side of the net. This will interact with the ball but not do anything on contact
+        let righTexture = SKTexture(imageNamed: "net-right")
+        self.netRightSideNode = SKSpriteNode(texture: righTexture)
+        self.netRightSideNode.size = CGSize(width: netSizes.rightSideWidth, height: netSizes.rightSideHeight)
+        self.netRightSideNode.alpha = 0
+        self.netRightSideNode.zPosition = layer.net
+        self.netRightSideNode.physicsBody = SKPhysicsBody(texture: righTexture, alphaThreshold: 0.3, size: righTexture.size())
+        self.netRightSideNode.physicsBody?.isDynamic = false
+        self.netRightSideNode.physicsBody?.categoryBitMask = pc.netEdge
+        self.netRightSideNode.physicsBody?.collisionBitMask = pc.ball
+        
+        // Set the starting position of the net
+        self.moveBlock(toPosition: CGPoint(x: self.size.width/2, y: netSizes.netHeight - 30))
+        
+        self.addChild(self.netWholeNode)
+        self.addChild(self.netBaseNode)
+        self.addChild(self.netLeftSideNode)
+        self.addChild(self.netRightSideNode)
     }
     
     func setupBoundaryNode() {
@@ -228,7 +259,7 @@ class GameScene: SKScene {
         self.boundaryNode.physicsBody?.restitution = 0.5
         self.boundaryNode.physicsBody?.isDynamic = false
         self.boundaryNode.physicsBody?.categoryBitMask = pc.boundary
-        self.boundaryNode.physicsBody?.collisionBitMask = pc.ball
+        self.boundaryNode.physicsBody?.collisionBitMask = pc.none
         self.boundaryNode.physicsBody?.contactTestBitMask = pc.none
         
         self.addChild(self.boundaryNode)
@@ -247,16 +278,18 @@ class GameScene: SKScene {
         let ball = SKSpriteNode(imageNamed: netballImage)
         ball.position = CGPoint(x: x, y: y)
         ball.size = CGSize(width: w, height: w)
+        ball.zPosition = layer.ball
         ball.physicsBody = SKPhysicsBody(circleOfRadius: w/2)
         ball.physicsBody?.velocity = CGVector(dx: xVelocity, dy: 0)
         ball.physicsBody?.affectedByGravity = true
         ball.physicsBody?.categoryBitMask = pc.ball
+        // Ignore falling balls during the intro sequence of the practice round
         if self.state == .introPractice {
             ball.physicsBody?.collisionBitMask = (pc.boundary | pc.ball)
             ball.physicsBody?.contactTestBitMask = (pc.boundary)
         } else {
-            ball.physicsBody?.collisionBitMask = (pc.blockEdge | pc.blockBottom | pc.boundary | pc.ball)
-            ball.physicsBody?.contactTestBitMask = (pc.blockBottom | pc.boundary)
+            ball.physicsBody?.collisionBitMask = (pc.netEdge | pc.boundary | pc.ball)
+            ball.physicsBody?.contactTestBitMask = (pc.netBase | pc.boundary)
         }
         
         // Vanish after 10 seconds
@@ -333,7 +366,7 @@ class GameScene: SKScene {
         }
         
         // Limit how far the basket can move to prevent the ball from slipping through the walls
-        let currentX = self.blockNode.position.x
+        let currentX = self.netWholeNode.position.x
         let diff = currentX-pos.x
         var newX = pos.x
         if diff >= ballSizes.ballWidth/2 {
@@ -342,18 +375,30 @@ class GameScene: SKScene {
             newX = currentX + ballSizes.ballWidth/2 - 0.1
         }
         
-        self.moveBlock(toPosition: CGPoint(x: newX, y: pos.y))
+        self.moveBlock(toX: newX)
+    }
+    
+    func moveBlock(toX x: CGFloat) {
+        // Move only the net's x position
+        self.moveBlock(toPosition: CGPoint(x: x, y: self.netWholeNode.position.y))
     }
     
     func moveBlock(toPosition pos: CGPoint) {
-        self.blockNode.position = CGPoint(x: pos.x, y: self.blockNode.position.y)
+        // Move the net to an exact position
+        var x = pos.x
+        var y = pos.y
+        self.netWholeNode.position = CGPoint(x: x, y: y)
         
-        var x = pos.x - blockSizes.bottomBlockWidth/2 - blockSizes.edgeBlockWidth/2
-        let y = self.blockNode.position.y - blockSizes.bottomBlockHeight/2 + blockSizes.edgeBlockHeight/2
-        self.blockNodeL.position = CGPoint(x: x, y: y)
+        y = self.netWholeNode.position.y - netSizes.netHeight/2 + netSizes.baseHeight/2
+        self.netBaseNode.position = CGPoint(x: x, y: y)
+
+        x = self.netWholeNode.position.x - netSizes.netWidth/2 + netSizes.leftSideWidth/2
+        y = self.netWholeNode.position.y
+        self.netLeftSideNode.position = CGPoint(x: x, y: y)
         
-        x = pos.x + blockSizes.bottomBlockWidth/2 + blockSizes.edgeBlockWidth/2
-        self.blockNodeR.position = CGPoint(x: x, y: y)
+        x = self.netWholeNode.position.x + netSizes.netWidth/2 - netSizes.rightSideWidth/2
+        y = self.netWholeNode.position.y
+        self.netRightSideNode.position = CGPoint(x: x, y: y)
     }
     
     func catchBall(_ ballNode: SKNode) {
@@ -363,6 +408,13 @@ class GameScene: SKScene {
         // Ensure the balls always disapear before they can spawn
         let speed = (1.0 / Double(truncating: pow(self.difficulty.rawValue, Double(self.level)) as NSNumber))/2
         
+        // Allow the ball to fall through the floor
+        if self.state == .introPractice {
+            // The ball shouldn't ever interact with the net
+            ballNode.physicsBody?.collisionBitMask = pc.ball
+        } else {
+            ballNode.physicsBody?.collisionBitMask = (pc.ball | pc.netEdge)
+        }
         // Don't allow this ball to call this again
         ballNode.physicsBody?.contactTestBitMask = pc.none
         ballNode.run(SKAction.sequence([
@@ -405,19 +457,21 @@ class GameScene: SKScene {
         ])
         
         self.gameStateNode.run(intoSequence)
-        self.blockNode?.run(SKAction.fadeIn(withDuration: fadeInTime))
-        self.blockNodeL?.run(SKAction.fadeIn(withDuration: fadeInTime))
-        self.blockNodeR?.run(SKAction.fadeIn(withDuration: fadeInTime))
+        self.netWholeNode.run(SKAction.fadeIn(withDuration: fadeInTime))
+        self.netBaseNode.run(SKAction.fadeIn(withDuration: fadeInTime))
+        self.netLeftSideNode.run(SKAction.fadeIn(withDuration: fadeInTime))
+        self.netRightSideNode.run(SKAction.fadeIn(withDuration: fadeInTime))
     }
     
     func showGameOutro(completion: @escaping () -> Void) {
         // Fade out all nodes out to original positions
         let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
-        self.blockNode.run(fadeOutAction)
-        self.blockNodeL.run(fadeOutAction)
-        self.blockNodeR.run(fadeOutAction) {
+        self.netWholeNode.run(fadeOutAction)
+        self.netBaseNode.run(fadeOutAction)
+        self.netLeftSideNode.run(fadeOutAction)
+        self.netRightSideNode.run(fadeOutAction) {
             // Return the block to center screen
-            self.moveBlock(toPosition: CGPoint(x: self.size.width/2, y: 0))
+            self.moveBlock(toX: self.size.width/2)
         }
         self.gameStateNode.run(fadeOutAction)
         self.scoreNode.run(fadeOutAction)
@@ -466,10 +520,11 @@ class GameScene: SKScene {
                 SKAction.wait(forDuration: 2),
                 SKAction.fadeOut(withDuration: fadeTime),
                 SKAction.run {
-                    self.setGameStateText("Catch them in this\nbucket")
-                    self.blockNode?.run(SKAction.fadeIn(withDuration: fadeTime))
-                    self.blockNodeL?.run(SKAction.fadeIn(withDuration: fadeTime))
-                    self.blockNodeR?.run(SKAction.fadeIn(withDuration: fadeTime))
+                    self.setGameStateText("Catch them in this\nnet")
+                    self.netWholeNode.run(SKAction.fadeIn(withDuration: fadeTime))
+                    self.netBaseNode.run(SKAction.fadeIn(withDuration: fadeTime))
+                    self.netLeftSideNode.run(SKAction.fadeIn(withDuration: fadeTime))
+                    self.netRightSideNode.run(SKAction.fadeIn(withDuration: fadeTime))
                 },
                 SKAction.fadeIn(withDuration: fadeTime),
                 SKAction.wait(forDuration: 2),
@@ -625,13 +680,14 @@ extension GameScene: SKPhysicsContactDelegate {
         
         // Only bodyB should ever be the ball
         guard contact.bodyB.categoryBitMask == pc.ball,
-            let ballNode = contact.bodyB.node else { return }
+            let ballNode = contact.bodyB.node,
+            ballNode.physicsBody?.contactTestBitMask != pc.none else { return }
         
         switch self.state {
         case .startedPractice:
             self.catchBall(ballNode)
             // bodyA will either the the capturing basket or the boundary
-            if contact.bodyA.categoryBitMask == pc.blockBottom {
+            if contact.bodyA.categoryBitMask == pc.netBase {
                 if self.practiceStep == .step3 {
                     self.practiceStep = .step5
                 } else if self.practiceStep == .step4 {
@@ -648,7 +704,7 @@ extension GameScene: SKPhysicsContactDelegate {
             }
         case .started:
             // bodyA will either the the capturing basket or the boundary
-            if contact.bodyA.categoryBitMask == pc.blockBottom {
+            if contact.bodyA.categoryBitMask == pc.netBase {
                 self.catchBall(ballNode)
             } else if contact.bodyA.categoryBitMask == pc.boundary {
                 self.endGame()

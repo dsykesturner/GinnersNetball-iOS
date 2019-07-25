@@ -13,9 +13,23 @@ class FirebaseStorage: NSObject {
     
     let easyLeaderboardRef = Database.database().reference(withPath: "leaderboard/easy")
     let hardLeaderboardRef = Database.database().reference(withPath: "leaderboard/hard")
-
+    let usersRef = Database.database().reference(withPath: "users")
+    
     override init() {
         super.init()
+        
+        Auth.auth().signInAnonymously { (authResult, error) in
+            if let error = error {
+                print("Failed to sign in: \(error)")
+            } else if let user = authResult?.user {
+                // User signed in
+                print("user \(user.uid) signed in")
+                self.login(user: user)
+            } else {
+                // User signed out
+                print("user signed out")
+            }
+        }
     }
     
     func observeEasyLeaderboard(completion: ((Score?) -> Void)?) {
@@ -48,6 +62,10 @@ class FirebaseStorage: NSObject {
             let scoreRef = self.hardLeaderboardRef.childByAutoId()
             scoreRef.setValue(score.toAnyObject())
         }
-        
+    }
+    
+    func login(user: User) {
+        let singleUserRef = self.usersRef.child(user.uid)
+        singleUserRef.setValue(Date().timeIntervalSince1970)
     }
 }

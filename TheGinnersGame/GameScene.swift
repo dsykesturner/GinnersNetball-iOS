@@ -193,7 +193,7 @@ class GameScene: SKScene {
         
         self.addChild(playAgainButton)
         
-        let quitY = self.playAgainButton.position.y - self.playAgainButton.frame.height - 20
+        let quitY = self.playAgainButton.position.y - self.playAgainButton.frame.height - 40
         
         self.quitButton = SKLabelNode(text: "Quit")
         self.quitButton.fontName = "HelveticaNeue-Medium"

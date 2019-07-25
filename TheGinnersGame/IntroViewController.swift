@@ -24,23 +24,14 @@ class IntroViewController: UIViewController {
             let scene = IntroScene(size: view.frame.size)
             scene.scaleMode = .aspectFill
             view.presentScene(scene)
-            
             view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
+//            view.showsFPS = true
+//            view.showsNodeCount = true
         }
         
         // Lock/unlock hard mode
         self.hardButton.alpha = self.storage.hasUnlockedHardMode ? 1.0 : 0.5
             
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-//        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-//            // ...
-//        }
     }
     
     override var prefersStatusBarHidden: Bool {

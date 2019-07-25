@@ -31,6 +31,7 @@ struct blockSizes {
 }
 
 struct netSizes {
+    // These must be the exact sizes of the images since the physics models are created from the image sizes
     static let baseHeight:CGFloat = 41.0/3
     static let baseWidth:CGFloat = 224.0/3
     

@@ -32,7 +32,7 @@ class IntroViewController: UIViewController {
         }
         
         // Lock/unlock hard mode
-        self.hardButton.alpha = self.storage.hasUnlockedHardMode ? 1.0 : 0.3
+        self.hardButton.alpha = self.storage.hasUnlockedHardMode ? 1.0 : 0.5
             
     }
     

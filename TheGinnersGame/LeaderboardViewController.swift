@@ -81,6 +81,25 @@ class LeaderboardViewController: UIViewController {
         }
     }
     
+    @IBAction func updateUsernameTapped(_ sender: Any) {
+        self.storage.hasShownPromptForUsername = true
+        // Ask for a username to save the score
+        let requestUsername = UIAlertController(title: "Update Leaderboard", message: "Enter a username to save to the leaderboard", preferredStyle: .alert)
+        requestUsername.addTextField { (textField) in
+            textField.placeholder = "Username"
+        }
+        let save = UIAlertAction(title: "Save", style: .default) { (action) in
+            guard let textField = requestUsername.textFields?.first,
+                let newUsername = textField.text,
+                newUsername.count > 0 else { return }
+            self.storage.username = newUsername
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler:  nil)
+        requestUsername.addAction(save)
+        requestUsername.addAction(cancel)
+        self.present(requestUsername, animated: true, completion: nil)
+    }
+    
     @IBAction func leaderboardRegionValueChanged(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             self.loadLocalLeaderboard()

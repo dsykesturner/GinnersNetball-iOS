@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import Firebase
 
 class IntroViewController: UIViewController {
     
@@ -32,7 +33,11 @@ class IntroViewController: UIViewController {
         // Lock/unlock hard mode
         guard let _ = self.storage else { return }
         self.hardButton.alpha = self.storage!.hasUnlockedHardMode ? 1.0 : 0.5
-            
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Firebase.Analytics.setScreenName("Intro Screen", screenClass: "IntroViewController")
     }
     
     override var prefersStatusBarHidden: Bool {

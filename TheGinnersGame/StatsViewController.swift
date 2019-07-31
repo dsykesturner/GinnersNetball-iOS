@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class StatsViewController: UIViewController {
 
@@ -18,6 +19,11 @@ class StatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.calculateAllStats()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Firebase.Analytics.setScreenName("Stats Screen", screenClass: "StatsViewController")
     }
     
     override var prefersStatusBarHidden: Bool {

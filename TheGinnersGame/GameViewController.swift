@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import Firebase
 
 class GameViewController: UIViewController {
 
@@ -38,6 +39,11 @@ class GameViewController: UIViewController {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Firebase.Analytics.setScreenName("Game Screen", screenClass: "GameViewController")
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }

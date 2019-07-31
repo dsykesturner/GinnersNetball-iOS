@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LeaderboardViewController: UIViewController {
 
@@ -19,6 +20,11 @@ class LeaderboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadGlobalLeaderboard()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Firebase.Analytics.setScreenName("Leaderboard Screen", screenClass: "LeaderboardViewController")
     }
     
     override var prefersStatusBarHidden: Bool {

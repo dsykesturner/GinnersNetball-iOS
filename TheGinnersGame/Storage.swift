@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import Firebase
 
 class Storage: NSObject {
     private var firebaseStorage = FirebaseStorage()
     // User
     var username: String? {
         set(new) {
+            Firebase.Analytics.logEvent("set_username", parameters: nil)
             UserDefaults.standard.set(new, forKey: "Username")
         }
         get {

@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import Firebase
 
 struct pc { // Physics Category
     static let none: UInt32     = 0x1 << 0
@@ -613,6 +614,7 @@ class GameScene: SKScene {
                 SKAction.wait(forDuration: 1),
                 SKAction.fadeOut(withDuration: fadeTime),
                 SKAction.run {
+                    Analytics.logEvent(AnalyticsEventTutorialComplete, parameters: nil)
                     self.gameDelegate.finishedPracticeGame()
                     self.difficulty = .easy
                     self.startGame()
@@ -622,6 +624,7 @@ class GameScene: SKScene {
     }
     
     func startGame() {
+        Firebase.Analytics.logEvent("started_game", parameters: ["Difficulty":self.difficulty.toString()])
         self.showGameIntro {
             self.state = .started
             self.beginLevel()
@@ -629,11 +632,14 @@ class GameScene: SKScene {
     }
     
     func startPracticeGame() {
+        Analytics.logEvent(AnalyticsEventTutorialBegin, parameters: nil)
         self.practiceStep = .step1
         self.showPractice()
     }
     
     func endGame() {
+        Firebase.Analytics.logEvent("ended_game", parameters: ["Difficulty":self.difficulty.toString()])
+        
         self.state = .ended
         // Stop new balls from spawning
         removeAction(forKey: "spawnBalls")

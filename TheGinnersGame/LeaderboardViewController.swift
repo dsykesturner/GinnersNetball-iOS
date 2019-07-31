@@ -18,7 +18,7 @@ class LeaderboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadLocalLeaderboard()
+        self.loadGlobalLeaderboard()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -84,7 +84,7 @@ class LeaderboardViewController: UIViewController {
     func requestForUsername(didRetry: Bool) {
         self.storage.hasShownPromptForUsername = true
         // Ask for a username to save the score
-        let message = didRetry ? "(enter a username of 10 characters or less)" : "Enter a username to save to the leaderboard"
+        let message = didRetry ? "(enter a username of 9 characters or less)" : "Enter a username to save to the leaderboard"
         let requestUsername = UIAlertController(title: "Update Username", message: message, preferredStyle: .alert)
         requestUsername.addTextField { (textField) in
             textField.placeholder = "Username"
@@ -94,7 +94,7 @@ class LeaderboardViewController: UIViewController {
                 let newUsername = textField.text,
                 newUsername.count > 0 else { return }
             
-            if newUsername.count <= 10 {
+            if newUsername.count <= 9 {
                 self.storage.username = newUsername
             } else {
                 self.requestForUsername(didRetry: true)

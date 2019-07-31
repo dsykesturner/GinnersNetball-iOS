@@ -56,4 +56,8 @@ class IntroViewController: UIViewController {
     @IBAction func leaderboardTapped(_ sender: Any) {
         self.coordinator.showLeaderboardView()
     }
+    
+    @IBAction func statsTapped(_ sender: Any) {
+        self.coordinator.showStatsView()
+    }
 }

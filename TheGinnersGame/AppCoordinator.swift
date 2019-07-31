@@ -41,4 +41,12 @@ class AppCoordinator: NSObject {
         self.window.rootViewController = leaderboardVC
         Firebase.Analytics.setScreenName("Leaderboard Screen", screenClass: "GameViewController")
     }
+    
+    func showStatsView() {
+        let statsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StatsViewController") as! StatsViewController
+        statsVC.coordinator = self
+        statsVC.storage = self.storage
+        self.window.rootViewController = statsVC
+        Firebase.Analytics.setScreenName("Stats Screen", screenClass: "StatsViewController")
+    }
 }

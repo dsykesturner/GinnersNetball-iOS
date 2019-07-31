@@ -59,7 +59,7 @@ class GameViewController: UIViewController {
     func requestForUsername(didRetry: Bool, closed: (() -> Void)?) {
         self.storage.hasShownPromptForUsername = true
         // Ask for a username to save the score
-        let message = didRetry ? "(enter a username of 10 characters or less)" : "Enter a username to save to the leaderboard"
+        let message = didRetry ? "(enter a username of 9 characters or less)" : "Enter a username to save to the leaderboard"
         let requestUsername = UIAlertController(title: "Save To Leaderboard", message: message, preferredStyle: .alert)
         requestUsername.addTextField { (textField) in
             textField.placeholder = "Username"
@@ -69,7 +69,7 @@ class GameViewController: UIViewController {
                 let newUsername = textField.text,
                 newUsername.count > 0 else { return }
             
-            if newUsername.count <= 10 {
+            if newUsername.count <= 9 {
                 self.storage.username = newUsername
                 closed?()
             } else {

@@ -118,6 +118,10 @@ class LeaderboardViewController: UIViewController {
         }
     }
     
+    @IBAction func statsTapped(_ sender: Any) {
+        self.coordinator.showStatsView()
+    }
+    
     @IBAction func closeTapped(_ sender: Any) {
         self.coordinator.showIntroView()
     }

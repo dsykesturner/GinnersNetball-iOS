@@ -17,7 +17,63 @@ class StatsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.calculateAllStats()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    // MARK: Actions
+    
+    @IBAction func closeTapped(_ sender: Any) {
+        self.coordinator.showLeaderboardView()
+    }
+}
 
+extension StatsViewController {
+    // MARK: Calculations for game stats
+    
+    func calculateSpawnSpeed(difficultyFactor: Double) -> Double {
+        return 1.0 / difficultyFactor
+    }
+    
+    func calculateNumberOfLevels(difficultyFactor: Double) -> Int {
+        return Int(15 * difficultyFactor)
+    }
+    
+    func calculateDifficultyFactor(difficulty: GameDifficulty, level: Int) -> Double {
+        return Double(truncating: pow(difficulty.rawValue, Double(level)) as NSNumber)
+    }
+    
+    func calculateSpawnSpeedAndLevelCount(difficulty: GameDifficulty, level: Int) -> (Double, Int) {
+        let difficultyFactor = calculateDifficultyFactor(difficulty: difficulty, level: level)
+        let spawnSpeed = calculateSpawnSpeed(difficultyFactor: difficultyFactor)
+        let numberOfLevels = calculateNumberOfLevels(difficultyFactor: difficultyFactor)
+        
+        return (spawnSpeed, numberOfLevels)
+    }
+    
+    func calculateGameTimeSeconds(difficulty: GameDifficulty, score: Int) -> Double {
+        
+        var score = score
+        var gameTime = 0.0
+        var level = 1
+        
+        while score > 0 {
+            let (spawnSpeed, numberOfLevels) = calculateSpawnSpeedAndLevelCount(difficulty: difficulty, level: level)
+            let levelsToRemove = score < numberOfLevels ? score : numberOfLevels
+            
+            gameTime += spawnSpeed * Double(levelsToRemove)
+            score -= levelsToRemove
+            level += 1
+        }
+        
+        return gameTime
+    }
+    
+    func calculateAllStats() {
+        
         let easyScores = storage.localLeaderboardEasy
         let hardScores = storage.localLeaderboardHard
         
@@ -28,6 +84,7 @@ class StatsViewController: UIViewController {
         var easyScoresSum = 0
         var hardScoresSum = 0
         
+        // Loop through every score and add up the stats
         for score in easyScores {
             let gameTime = self.calculateGameTimeSeconds(difficulty: .easy, score: score.score)
             easyGameTimes.append(gameTime)
@@ -41,22 +98,26 @@ class StatsViewController: UIViewController {
             hardScoresSum += score.score
         }
         
-        let totalGames = easyGameTimes.count + hardGameTimes.count
+        // Total Games
+        let totalGames:Int = easyGameTimes.count + hardGameTimes.count
         
         // Total Game Time
-        let totalGameTime = easyGameTimeSum + hardGameTimeSum
+        let totalGameTime:Double = easyGameTimeSum + hardGameTimeSum
         
         // Average Game Time
-//        let aveGameTimeEasy = easyGameTimeSum / Double(easyGameTimes.count)
-//        let aveGameTimeHard = hardGameTimeSum / Double(hardGameTimes.count)
-        let aveGameTime = totalGames > 0 ? totalGameTime / Double(totalGames) : 0
-
+        let aveGameTime:Double = totalGames > 0 ? totalGameTime / Double(totalGames) : 0
+        
         // Total Score
-        let totalScore = easyScoresSum + hardScoresSum
+        let totalScore:Int = easyScoresSum + hardScoresSum
         
         // Average Score
-        let averageScoreEasy = easyGameTimes.count > 0 ? Double(easyScoresSum) / Double(easyGameTimes.count) : 0
-        let averageScoreHard = hardGameTimes.count > 0 ? Double(hardScoresSum) / Double(hardGameTimes.count) : 0
+        let averageScoreEasy:Double = easyGameTimes.count > 0 ? Double(easyScoresSum) / Double(easyGameTimes.count) : 0
+        let averageScoreHard:Double = hardGameTimes.count > 0 ? Double(hardScoresSum) / Double(hardGameTimes.count) : 0
+        
+        self.showStats(totalGameTime: totalGameTime, aveGameTime: aveGameTime, totalScore: totalScore, averageScoreEasy: averageScoreEasy, averageScoreHard: averageScoreHard, totalGames: totalGames)
+    }
+    
+    func showStats(totalGameTime: Double, aveGameTime: Double, totalScore: Int, averageScoreEasy: Double, averageScoreHard: Double, totalGames: Int) {
         
         let rightAlignStyle = NSMutableParagraphStyle()
         rightAlignStyle.alignment = .right
@@ -70,18 +131,20 @@ class StatsViewController: UIViewController {
             NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Thin", size: 25)!
         ]
         
-        
-        let totalGameTimeVal = NSAttributedString(string: "\(Int(totalGameTime))s", attributes: rightAlign)
-        let aveGameTimeVal = NSAttributedString(string: "\(Int(aveGameTime))s", attributes: rightAlign)
-        let totalScoreVal = NSAttributedString(string: "\(Int(totalScore))", attributes: rightAlign)
-        let aveScoreEasyVal = NSAttributedString(string: "\(Int(averageScoreEasy))", attributes: rightAlign)
-        let aveScoreHardVal = NSAttributedString(string: "\(Int(averageScoreHard))", attributes: rightAlign)
+        // Create formated strings from the stats
+        let totalGameTimeVal    = NSAttributedString(string: "\(Int(totalGameTime))s", attributes: rightAlign)
+        let aveGameTimeVal      = NSAttributedString(string: "\(Int(aveGameTime))s", attributes: rightAlign)
+        let totalScoreVal       = NSAttributedString(string: "\(Int(totalScore))", attributes: rightAlign)
+        let aveScoreEasyVal     = NSAttributedString(string: "\(Int(averageScoreEasy))", attributes: rightAlign)
+        let aveScoreHardVal     = NSAttributedString(string: "\(Int(averageScoreHard))", attributes: rightAlign)
+        let totalGamesVal       = NSAttributedString(string: "\(Int(totalGames))", attributes: rightAlign)
         
         let totalGameTimeStr    = NSAttributedString(string: "\nTotal Game Time\n", attributes: regular)
         let aveGameTimeStr      = NSAttributedString(string: "\nAverage Game Time\n", attributes: regular)
         let totalScoreStr       = NSAttributedString(string: "Total Goals Scored\n", attributes: regular)
         let aveScoreEasyStr     = NSAttributedString(string: "\nAverage Score (Easy)\n", attributes: regular)
         let aveScoreHardStr     = NSAttributedString(string: "\nAverage Score (Hard)\n", attributes: regular)
+        let totalGamesStr       = NSAttributedString(string: "\nTotal Games Played\n", attributes: regular)
         
         let statsString = NSMutableAttributedString()
         statsString.append(totalScoreStr)
@@ -99,56 +162,9 @@ class StatsViewController: UIViewController {
         statsString.append(aveGameTimeStr)
         statsString.append(aveGameTimeVal)
         
+        statsString.append(totalGamesStr)
+        statsString.append(totalGamesVal)
+        
         self.statsLabel.attributedText = statsString
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    // MARK: Calculations for game stats
-    
-    func calculateSpawnSpeed(difficultyFactor: Double) -> Double {
-        return 1.0 / difficultyFactor
-    }
-    
-    func calculateNumberOfLevels(difficultyFactor: Double) -> Int {
-        return Int(15 * difficultyFactor)
-    }
-    
-    func calculateDifficultyFactor(difficulty: GameDifficulty, level: Int) -> Double {
-        return Double(truncating: pow(difficulty.rawValue, Double(level)) as NSNumber)
-    }
-    
-    func calculate(difficulty: GameDifficulty, level: Int) -> (Double, Int) {
-        let difficultyFactor = calculateDifficultyFactor(difficulty: difficulty, level: level)
-        let spawnSpeed = calculateSpawnSpeed(difficultyFactor: difficultyFactor)
-        let numberOfLevels = calculateNumberOfLevels(difficultyFactor: difficultyFactor)
-        
-        return (spawnSpeed, numberOfLevels)
-    }
-    
-    func calculateGameTimeSeconds(difficulty: GameDifficulty, score: Int) -> Double {
-        
-        var score = score
-        var gameTime = 0.0
-        var level = 1
-        
-        while score > 0 {
-            let (spawnSpeed, numberOfLevels) = calculate(difficulty: difficulty, level: level)
-            let levelsToRemove = score < numberOfLevels ? score : numberOfLevels
-            
-            gameTime += spawnSpeed * Double(levelsToRemove)
-            score -= levelsToRemove
-            level += 1
-        }
-        
-        return gameTime
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func closeTapped(_ sender: Any) {
-        self.coordinator.showIntroView()
     }
 }

@@ -28,7 +28,6 @@
 		520FB14B8A6DF14752E073FA /* libPods-TheGinnersGame.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TheGinnersGame.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		653E0B3F22E1ACE100537252 /* IntroScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScene.swift; sourceTree = "<group>"; };
 		6548134022E1C7F600742A5A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		655AE1DC22EEB36F000DF3A2 /* TheGinnersGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TheGinnersGame.entitlements; sourceTree = "<group>"; };
 		6566D04522E1B4CA00FB299D /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		658B7A1D22E1E6FA00323D70 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		658B7A2322E2149F00323D70 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -88,7 +87,6 @@
 		65F68EB222DCBA63006EBEE4 /* TheGinnersGame */ = {
 			isa = PBXGroup;
 			children = (
-				655AE1DC22EEB36F000DF3A2 /* TheGinnersGame.entitlements */,
 				65F68EB322DCBA63006EBEE4 /* AppDelegate.swift */,
 				6548134022E1C7F600742A5A /* AppCoordinator.swift */,
 				6566D04522E1B4CA00FB299D /* IntroViewController.swift */,

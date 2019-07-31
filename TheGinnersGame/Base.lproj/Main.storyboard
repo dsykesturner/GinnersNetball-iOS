@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Jdl-m1-Abl">
-    <device id="mac" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Jdl-m1-Abl">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,11 +15,11 @@
             <objects>
                 <viewController storyboardIdentifier="IntroViewController" id="Jdl-m1-Abl" customClass="IntroViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mVR-LQ-Cjw" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1VJ-aB-XLJ">
-                                <rect key="frame" x="325" y="245" width="150" height="50"/>
+                                <rect key="frame" x="132" y="378" width="150" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="EXH-fS-2FE"/>
@@ -38,7 +40,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pg-dx-bdQ">
-                                <rect key="frame" x="315" y="540" width="170" height="40"/>
+                                <rect key="frame" x="122" y="812" width="170" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="170" id="0hD-D6-kVE"/>
@@ -58,7 +60,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GXm-fF-jCt">
-                                <rect key="frame" x="325" y="335" width="150" height="50"/>
+                                <rect key="frame" x="132" y="468" width="150" height="50"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="UDL-NC-OFC"/>
@@ -78,7 +80,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ginners-logo" translatesAutoresizingMaskIntoConstraints="NO" id="aaD-JX-hZy">
-                                <rect key="frame" x="240" y="45" width="320" height="150"/>
+                                <rect key="frame" x="47" y="104" width="320" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="eb1-zD-jvc"/>
                                     <constraint firstAttribute="width" constant="320" id="sWZ-Jy-97K"/>
@@ -92,7 +94,7 @@
                             <constraint firstItem="aaD-JX-hZy" firstAttribute="centerY" secondItem="mVR-LQ-Cjw" secondAttribute="centerY" multiplier="0.4" id="LYW-Ne-xTc"/>
                             <constraint firstItem="GXm-fF-jCt" firstAttribute="top" secondItem="1VJ-aB-XLJ" secondAttribute="bottom" constant="40" id="NS2-4m-qCi"/>
                             <constraint firstItem="1VJ-aB-XLJ" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="Uiw-ip-bBi"/>
-                            <constraint firstItem="MeR-o0-xtf" firstAttribute="bottom" secondItem="7pg-dx-bdQ" secondAttribute="bottom" constant="20" id="Wqb-6g-8bi"/>
+                            <constraint firstItem="MeR-o0-xtf" firstAttribute="bottom" secondItem="7pg-dx-bdQ" secondAttribute="bottom" constant="10" id="Wqb-6g-8bi"/>
                             <constraint firstItem="GXm-fF-jCt" firstAttribute="centerX" secondItem="1VJ-aB-XLJ" secondAttribute="centerX" id="XFi-hh-nrc"/>
                             <constraint firstItem="aaD-JX-hZy" firstAttribute="centerX" secondItem="1VJ-aB-XLJ" secondAttribute="centerX" id="YAf-b5-IhT"/>
                             <constraint firstItem="aaD-JX-hZy" firstAttribute="centerX" secondItem="mVR-LQ-Cjw" secondAttribute="centerX" id="ce7-QZ-3Tv"/>
@@ -112,7 +114,7 @@
             <objects>
                 <viewController storyboardIdentifier="GameViewController" id="BV1-FR-VrT" customClass="GameViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
@@ -127,17 +129,17 @@
             <objects>
                 <viewController storyboardIdentifier="LeaderboardViewController" id="5BS-7V-DZ1" customClass="LeaderboardViewController" customModule="TheGinnersGame" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3bG-T4-THs">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YM-A1-7DB">
-                                <rect key="frame" x="273" y="41" width="255" height="58"/>
+                                <rect key="frame" x="79.5" y="150.5" width="255" height="57.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIE-TM-MB6">
-                                <rect key="frame" x="345" y="490" width="110" height="40"/>
+                                <rect key="frame" x="152" y="741.5" width="110" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="as8-fI-Vr9"/>
@@ -157,7 +159,7 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iar-iJ-qno">
-                                <rect key="frame" x="273" y="119" width="255" height="28"/>
+                                <rect key="frame" x="79.5" y="228" width="255" height="27.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26.5" id="QeP-wg-VCL"/>
                                 </constraints>
@@ -171,10 +173,10 @@
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7pZ-iU-eqa">
-                                <rect key="frame" x="86" y="165" width="628" height="270"/>
+                                <rect key="frame" x="20" y="274.5" width="374" height="347"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTr-Qt-DPm">
-                                        <rect key="frame" x="0.0" y="40" width="294" height="230"/>
+                                        <rect key="frame" x="0.0" y="40" width="167" height="307"/>
                                         <string key="text">100    1234567890
 2. User Name Two
 3. User Name Three
@@ -190,7 +192,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Easy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apa-qL-jnk">
-                                        <rect key="frame" x="0.0" y="0.0" width="294" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="167" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Feu-Sb-fEd"/>
                                         </constraints>
@@ -199,13 +201,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXh-aY-lrP">
-                                        <rect key="frame" x="334" y="0.0" width="294" height="30"/>
+                                        <rect key="frame" x="207" y="0.0" width="167" height="30"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="25"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YhL-RL-LWM">
-                                        <rect key="frame" x="334" y="40" width="294" height="230"/>
+                                        <rect key="frame" x="207" y="40" width="167" height="307"/>
                                         <string key="text">1. User Name One
 2. User Name Two
 3. User Name Three
@@ -241,7 +243,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bMk-1s-3e3">
-                                <rect key="frame" x="751" y="10" width="30" height="34"/>
+                                <rect key="frame" x="364.5" y="54" width="29.5" height="33.5"/>
                                 <state key="normal" image="user"/>
                                 <connections>
                                     <action selector="updateUsernameTapped:" destination="5BS-7V-DZ1" eventType="touchUpInside" id="1Q7-rB-2T3"/>
@@ -277,7 +279,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ginners-logo" width="350" height="132.5"/>
+        <image name="ginners-logo" width="925" height="350"/>
         <image name="user" width="29.5" height="33.5"/>
     </resources>
 </document>

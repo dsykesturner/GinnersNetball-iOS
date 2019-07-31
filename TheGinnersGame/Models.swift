@@ -13,7 +13,7 @@ struct ScoreList: Codable {
     
     init?(snapshot: DataSnapshot) {
         guard let values = snapshot.value as? [String:[String:AnyObject]] else { return nil }
-        
+
         self.scores = []
         for value in values.values {
             if let score = Score(value: value) {

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Daniel Sykes-Turner. All rights reserved.
 //
 
-import Firebase
+import Foundation
 
 class Storage: NSObject {
     private var firebaseStorage = FirebaseStorage()

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CDDE448E33F190E230AD2A3 /* libPods-TheGinnersGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 520FB14B8A6DF14752E073FA /* libPods-TheGinnersGame.a */; };
 		653E0B4022E1ACE100537252 /* IntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653E0B3F22E1ACE100537252 /* IntroScene.swift */; };
 		6548134122E1C7F600742A5A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548134022E1C7F600742A5A /* AppCoordinator.swift */; };
 		6566D04722E1B50C00FB299D /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6566D04522E1B4CA00FB299D /* IntroViewController.swift */; };
@@ -21,13 +22,13 @@
 		65F68EBF22DCBA63006EBEE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65F68EBD22DCBA63006EBEE4 /* Main.storyboard */; };
 		65F68EC122DCBA64006EBEE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65F68EC022DCBA64006EBEE4 /* Assets.xcassets */; };
 		65F68EC422DCBA64006EBEE4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65F68EC222DCBA64006EBEE4 /* LaunchScreen.storyboard */; };
-		877DF99204E036291FBF997A /* libPods-TheGinnersGame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 520FB14B8A6DF14752E073FA /* libPods-TheGinnersGame.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		520FB14B8A6DF14752E073FA /* libPods-TheGinnersGame.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TheGinnersGame.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		653E0B3F22E1ACE100537252 /* IntroScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScene.swift; sourceTree = "<group>"; };
 		6548134022E1C7F600742A5A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		655AE1DC22EEB36F000DF3A2 /* TheGinnersGame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TheGinnersGame.entitlements; sourceTree = "<group>"; };
 		6566D04522E1B4CA00FB299D /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		658B7A1D22E1E6FA00323D70 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		658B7A2322E2149F00323D70 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -51,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				877DF99204E036291FBF997A /* libPods-TheGinnersGame.a in Frameworks */,
+				4CDDE448E33F190E230AD2A3 /* libPods-TheGinnersGame.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +88,7 @@
 		65F68EB222DCBA63006EBEE4 /* TheGinnersGame */ = {
 			isa = PBXGroup;
 			children = (
+				655AE1DC22EEB36F000DF3A2 /* TheGinnersGame.entitlements */,
 				65F68EB322DCBA63006EBEE4 /* AppDelegate.swift */,
 				6548134022E1C7F600742A5A /* AppCoordinator.swift */,
 				6566D04522E1B4CA00FB299D /* IntroViewController.swift */,
@@ -369,6 +371,7 @@
 			baseConfigurationReference = C0CEF7C05F2136F914962D10 /* Pods-TheGinnersGame.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TheGinnersGame/TheGinnersGame.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BU3JKZ42Q4;
 				INFOPLIST_FILE = TheGinnersGame/Info.plist;
@@ -379,6 +382,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = st.daniel.GinnersNetball;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -389,6 +393,7 @@
 			baseConfigurationReference = 800A23952F5AE70960F84DF5 /* Pods-TheGinnersGame.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TheGinnersGame/TheGinnersGame.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BU3JKZ42Q4;
 				INFOPLIST_FILE = TheGinnersGame/Info.plist;
@@ -399,6 +404,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = st.daniel.GinnersNetball;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

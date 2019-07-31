@@ -10,10 +10,10 @@ import SpriteKit
 import GameplayKit
 
 struct pc { // Physics Category
-    static let none: UInt32 = 0x1 << 0
-    static let ball: UInt32 = 0x1 << 1
-    static let netEdge: UInt32 = 0x1 << 2
-    static let netBase: UInt32 = 0x1 << 3
+    static let none: UInt32     = 0x1 << 0
+    static let ball: UInt32     = 0x1 << 1
+    static let netEdge: UInt32  = 0x1 << 2
+    static let netBase: UInt32  = 0x1 << 3
     static let boundary: UInt32 = 0x1 << 4
 }
 
@@ -222,8 +222,6 @@ class GameScene: SKScene {
         self.netBaseNode.physicsBody?.isDynamic = false
         self.netBaseNode.physicsBody?.categoryBitMask = pc.netBase
         self.netBaseNode.physicsBody?.collisionBitMask = pc.none
-        self.netBaseNode.physicsBody?.contactTestBitMask = pc.none
-        
         
         // Create the left side of the net. This will interact with the ball but not do anything on contact
         let leftTexture = SKTexture(imageNamed: "net-left")
@@ -237,23 +235,24 @@ class GameScene: SKScene {
         self.netLeftSideNode.physicsBody?.collisionBitMask = pc.ball
 
         // Create the right side of the net. This will interact with the ball but not do anything on contact
-        let righTexture = SKTexture(imageNamed: "net-right")
-        self.netRightSideNode = SKSpriteNode(texture: righTexture)
+        let rightTexture = SKTexture(imageNamed: "net-right")
+        self.netRightSideNode = SKSpriteNode(texture: rightTexture)
         self.netRightSideNode.size = CGSize(width: netSizes.rightSideWidth, height: netSizes.rightSideHeight)
         self.netRightSideNode.alpha = 0
         self.netRightSideNode.zPosition = layer.net
-        self.netRightSideNode.physicsBody = SKPhysicsBody(texture: righTexture, alphaThreshold: 0.3, size: righTexture.size())
+        self.netRightSideNode.physicsBody = SKPhysicsBody(texture: rightTexture, alphaThreshold: 0.3, size: rightTexture.size())
         self.netRightSideNode.physicsBody?.isDynamic = false
         self.netRightSideNode.physicsBody?.categoryBitMask = pc.netEdge
         self.netRightSideNode.physicsBody?.collisionBitMask = pc.ball
         
-        // Set the starting position of the net
-        self.moveBlock(toPosition: CGPoint(x: self.size.width/2, y: netSizes.netHeight - 30))
-        
-        self.addChild(self.netWholeNode)
+        // Add the net to the screen
         self.addChild(self.netBaseNode)
         self.addChild(self.netLeftSideNode)
         self.addChild(self.netRightSideNode)
+        self.addChild(self.netWholeNode)
+        
+        // Set the starting position of the net
+        self.moveBlock(toPosition: CGPoint(x: self.size.width/2, y: netSizes.netHeight - 30))
     }
     
     func setupBoundaryNode() {

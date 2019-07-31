@@ -6,7 +6,6 @@
 //  Copyright © 2019 Daniel Sykes-Turner. All rights reserved.
 //
 
-import Foundation
 import Firebase
 
 class FirebaseStorage: NSObject {

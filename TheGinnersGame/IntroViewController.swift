@@ -14,7 +14,7 @@ class IntroViewController: UIViewController {
     
     @IBOutlet weak var hardButton: UIButton!
     weak var coordinator: AppCoordinator!
-    var storage: Storage!
+    var storage: Storage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,8 @@ class IntroViewController: UIViewController {
         }
         
         // Lock/unlock hard mode
-        self.hardButton.alpha = self.storage.hasUnlockedHardMode ? 1.0 : 0.5
+        guard let _ = self.storage else { return }
+        self.hardButton.alpha = self.storage!.hasUnlockedHardMode ? 1.0 : 0.5
             
     }
     
@@ -43,7 +44,7 @@ class IntroViewController: UIViewController {
     }
     
     @IBAction func hardTapped(_ sender: Any) {
-        if self.storage.hasUnlockedHardMode {
+        if self.storage!.hasUnlockedHardMode {
             self.coordinator.showGameView(difficulty: .hard)
         } else {
             let alertView = UIAlertController(title: "Hard Mode Locked", message: "Score over 100 points to unlock hard mode", preferredStyle: .alert)

@@ -10,6 +10,8 @@ import SpriteKit
 import GameplayKit
 import Firebase
 
+// TODO: move these structs into their own file
+
 struct pc { // Physics Category
     static let none: UInt32     = 0x1 << 0
     static let ball: UInt32     = 0x1 << 1

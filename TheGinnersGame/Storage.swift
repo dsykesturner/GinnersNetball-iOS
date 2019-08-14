@@ -92,7 +92,6 @@ class Storage: NSObject {
         }
     }
     
-    
     override init() {
         super.init()
         
@@ -129,6 +128,8 @@ class Storage: NSObject {
         // Add globally
         self.firebaseStorage.saveScore(scoreModel, difficulty: difficulty)
     }
+    
+    // MARK: - Helpers
     
     private func archiveObject<T>(_ object: T) -> Data? where T : Encodable {
         do {

@@ -11,7 +11,6 @@ import GameplayKit
 import CoreMotion
 
 class IntroScene: SKScene {
-    
     var motion:CMMotionManager?
     
     override func didMove(to view: SKView) {
@@ -20,6 +19,8 @@ class IntroScene: SKScene {
         self.setupAccelerometer()
         self.spawnNetballs(-1)
     }
+
+    // MARK: - Screen setup
     
     private func setupAccelerometer() {
         
@@ -59,6 +60,8 @@ class IntroScene: SKScene {
         
         Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(setupScenePhysics), userInfo: nil, repeats: false)
     }
+    
+    // MARK: - Render
     
     func spawnNetballs(_ numberOfNetballs: Int) {
         

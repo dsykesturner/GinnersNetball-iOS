@@ -12,7 +12,6 @@ import GameplayKit
 import Firebase
 
 class IntroViewController: UIViewController {
-    
     @IBOutlet weak var hardButton: UIButton!
     weak var coordinator: AppCoordinator!
     var storage: Storage?
@@ -43,6 +42,8 @@ class IntroViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    // MARK: - Actions
     
     @IBAction func easyTapped(_ sender: Any) {
         self.coordinator.showGameView(difficulty: .easy)

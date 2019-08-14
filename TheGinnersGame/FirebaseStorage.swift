@@ -31,6 +31,8 @@ class FirebaseStorage: NSObject {
         }
     }
     
+    // MARK: - Getter funcs
+    
     func observeEasyLeaderboard(completion: ((Score?) -> Void)?) {
         let query = self.easyLeaderboardRef.queryOrdered(byChild: "score").queryLimited(toLast: 10)
         query.observe(.childAdded, with: { (snapshot) in
@@ -48,6 +50,8 @@ class FirebaseStorage: NSObject {
             }
         })
     }
+    
+    // MARK: - Setter funcs
     
     func saveScore(_ score: Score, difficulty: GameDifficulty) {
         switch difficulty {

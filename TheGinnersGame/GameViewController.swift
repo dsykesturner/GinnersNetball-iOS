@@ -12,7 +12,6 @@ import GameplayKit
 import Firebase
 
 class GameViewController: UIViewController {
-
     weak var coordinator: AppCoordinator!
     var storage: Storage!
     var gameDifficulty: GameDifficulty?
@@ -47,6 +46,8 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    // MARK: - Game boundary handling
     
     func showIntoView() {
         self.coordinator.showIntroView()
@@ -92,7 +93,6 @@ class GameViewController: UIViewController {
 }
 
 extension GameViewController: GameSceneDelegate {
-    
     func quitGame() {
         self.coordinator.showIntroView()
     }

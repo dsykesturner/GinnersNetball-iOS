@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 
 class StatsViewController: UIViewController {
-
     @IBOutlet weak var statsLabel: UITextView!
     
     weak var coordinator: AppCoordinator!
@@ -30,7 +29,7 @@ class StatsViewController: UIViewController {
         return true
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func closeTapped(_ sender: Any) {
         self.coordinator.showLeaderboardView()
@@ -38,45 +37,8 @@ class StatsViewController: UIViewController {
 }
 
 extension StatsViewController {
-    // MARK: Calculations for game stats
     
-    func calculateSpawnSpeed(difficultyFactor: Double) -> Double {
-        return 1.0 / difficultyFactor
-    }
-    
-    func calculateNumberOfLevels(difficultyFactor: Double) -> Int {
-        return Int(15 * difficultyFactor)
-    }
-    
-    func calculateDifficultyFactor(difficulty: GameDifficulty, level: Int) -> Double {
-        return Double(truncating: pow(difficulty.rawValue, Double(level)) as NSNumber)
-    }
-    
-    func calculateSpawnSpeedAndLevelCount(difficulty: GameDifficulty, level: Int) -> (Double, Int) {
-        let difficultyFactor = calculateDifficultyFactor(difficulty: difficulty, level: level)
-        let spawnSpeed = calculateSpawnSpeed(difficultyFactor: difficultyFactor)
-        let numberOfLevels = calculateNumberOfLevels(difficultyFactor: difficultyFactor)
-        
-        return (spawnSpeed, numberOfLevels)
-    }
-    
-    func calculateGameTimeSeconds(difficulty: GameDifficulty, score: Int) -> Double {
-        
-        var score = score
-        var gameTime = 0.0
-        var level = 1
-        
-        while score > 0 {
-            let (spawnSpeed, numberOfLevels) = calculateSpawnSpeedAndLevelCount(difficulty: difficulty, level: level)
-            let levelsToRemove = score < numberOfLevels ? score : numberOfLevels
-            
-            gameTime += spawnSpeed * Double(levelsToRemove)
-            score -= levelsToRemove
-            level += 1
-        }
-        
-        return gameTime
-    }
+    // MARK: - Render
     
     func calculateAllStats() {
         
@@ -172,5 +134,45 @@ extension StatsViewController {
         statsString.append(totalGamesVal)
         
         self.statsLabel.attributedText = statsString
+    }
+    
+    // MARK: - Calculations for game stats
+    
+    func calculateSpawnSpeed(difficultyFactor: Double) -> Double {
+        return 1.0 / difficultyFactor
+    }
+    
+    func calculateNumberOfLevels(difficultyFactor: Double) -> Int {
+        return Int(15 * difficultyFactor)
+    }
+    
+    func calculateDifficultyFactor(difficulty: GameDifficulty, level: Int) -> Double {
+        return Double(truncating: pow(difficulty.rawValue, Double(level)) as NSNumber)
+    }
+    
+    func calculateSpawnSpeedAndLevelCount(difficulty: GameDifficulty, level: Int) -> (Double, Int) {
+        let difficultyFactor = calculateDifficultyFactor(difficulty: difficulty, level: level)
+        let spawnSpeed = calculateSpawnSpeed(difficultyFactor: difficultyFactor)
+        let numberOfLevels = calculateNumberOfLevels(difficultyFactor: difficultyFactor)
+        
+        return (spawnSpeed, numberOfLevels)
+    }
+    
+    func calculateGameTimeSeconds(difficulty: GameDifficulty, score: Int) -> Double {
+        
+        var score = score
+        var gameTime = 0.0
+        var level = 1
+        
+        while score > 0 {
+            let (spawnSpeed, numberOfLevels) = calculateSpawnSpeedAndLevelCount(difficulty: difficulty, level: level)
+            let levelsToRemove = score < numberOfLevels ? score : numberOfLevels
+            
+            gameTime += spawnSpeed * Double(levelsToRemove)
+            score -= levelsToRemove
+            level += 1
+        }
+        
+        return gameTime
     }
 }

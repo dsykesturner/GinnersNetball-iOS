@@ -16,6 +16,8 @@ class AppCoordinator: NSObject {
         self.window = window
     }
     
+    // MARK: - Router - Change views
+    
     func showIntroView() {
         let introVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "IntroViewController") as! IntroViewController
         introVC.coordinator = self

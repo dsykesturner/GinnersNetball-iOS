@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 
 class LeaderboardViewController: UIViewController {
-
     @IBOutlet weak var easyLeaderboard: UILabel!
     @IBOutlet weak var hardLeaderboard: UILabel!
     
@@ -30,6 +29,8 @@ class LeaderboardViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    // MARK: - Render
     
     func loadLocalLeaderboard() {
         self.loadLeaderboard(easyScores: self.storage.localLeaderboardEasy, hardScores: self.storage.localLeaderboardHard)
@@ -111,6 +112,8 @@ class LeaderboardViewController: UIViewController {
         requestUsername.addAction(cancel)
         self.present(requestUsername, animated: true, completion: nil)
     }
+    
+    // MARK: - Actions
     
     @IBAction func updateUsernameTapped(_ sender: Any) {
         self.requestForUsername(didRetry: false)

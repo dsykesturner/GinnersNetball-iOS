@@ -10,6 +10,7 @@ import UIKit
 import SpriteKit
 import GameplayKit
 import Firebase
+import StoreKit
 
 class GameViewController: UIViewController {
     weak var coordinator: AppCoordinator!
@@ -35,6 +36,7 @@ class GameViewController: UIViewController {
             view.ignoresSiblingOrder = true
 //            view.showsFPS = true
 //            view.showsNodeCount = true
+//            view.showsPhysics = true
         }
     }
 
@@ -111,6 +113,11 @@ extension GameViewController: GameSceneDelegate {
                 self.saveNewScore(score, difficulty: difficulty)
             }
             return
+        }
+        // Prompt for a rating after the first hard game
+        if difficulty == .hard && self.storage.hasShownPromptForReview == false {
+            self.storage.hasShownPromptForReview = true
+            SKStoreReviewController.requestReview()
         }
         // Save the score
         self.storage.saveScore(score, difficulty: difficulty)

@@ -91,6 +91,14 @@ class Storage: NSObject {
             return UserDefaults.standard.bool(forKey: "HasShownPromptForUsername")
         }
     }
+    var hasShownPromptForReview: Bool {
+        set(new) {
+            UserDefaults.standard.set(new, forKey: "HasShownPromptForReview")
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: "HasShownPromptForReview")
+        }
+    }
     
     override init() {
         super.init()

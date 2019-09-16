@@ -216,34 +216,36 @@ class GameScene: SKScene {
         self.netWholeNode.zPosition = layer.net
         
         // Create the net base. This will interact with the ball and make it vanish on contact
-        let baseTexture = SKTexture(imageNamed: "net-base")
-        self.netBaseNode = SKSpriteNode(texture: baseTexture)
+        self.netBaseNode = SKSpriteNode()
         self.netBaseNode.size = CGSize(width: netSizes.baseWidth, height: netSizes.baseHeight)
         self.netBaseNode.alpha = 0
         self.netBaseNode.zPosition = layer.net
-        self.netBaseNode.physicsBody = SKPhysicsBody(texture: baseTexture, alphaThreshold: 0.3, size: baseTexture.size())
+        self.netBaseNode.physicsBody = SKPhysicsBody(rectangleOf:
+            CGSize(width: netSizes.baseWidth, height: netSizes.baseHeight))
         self.netBaseNode.physicsBody?.isDynamic = false
         self.netBaseNode.physicsBody?.categoryBitMask = pc.netBase
         self.netBaseNode.physicsBody?.collisionBitMask = pc.none
         
         // Create the left side of the net. This will interact with the ball but not do anything on contact
-        let leftTexture = SKTexture(imageNamed: "net-left")
-        self.netLeftSideNode = SKSpriteNode(texture: leftTexture)
+        self.netLeftSideNode = SKSpriteNode()
         self.netLeftSideNode.size = CGSize(width: netSizes.leftSideWidth, height: netSizes.leftSideHeight)
         self.netLeftSideNode.alpha = 0
         self.netLeftSideNode.zPosition = layer.net
-        self.netLeftSideNode.physicsBody = SKPhysicsBody(texture: leftTexture, alphaThreshold: 0.3, size: leftTexture.size())
+        self.netLeftSideNode.physicsBody = SKPhysicsBody(
+            edgeFrom: CGPoint(x: -netSizes.leftSideWidth/2, y: netSizes.leftSideHeight/2),
+            to: CGPoint(x: netSizes.leftSideWidth/2, y: -netSizes.leftSideHeight/2))
         self.netLeftSideNode.physicsBody?.isDynamic = false
         self.netLeftSideNode.physicsBody?.categoryBitMask = pc.netEdge
         self.netLeftSideNode.physicsBody?.collisionBitMask = pc.ball
 
         // Create the right side of the net. This will interact with the ball but not do anything on contact
-        let rightTexture = SKTexture(imageNamed: "net-right")
-        self.netRightSideNode = SKSpriteNode(texture: rightTexture)
+        self.netRightSideNode = SKSpriteNode()
         self.netRightSideNode.size = CGSize(width: netSizes.rightSideWidth, height: netSizes.rightSideHeight)
         self.netRightSideNode.alpha = 0
         self.netRightSideNode.zPosition = layer.net
-        self.netRightSideNode.physicsBody = SKPhysicsBody(texture: rightTexture, alphaThreshold: 0.3, size: rightTexture.size())
+        self.netRightSideNode.physicsBody = SKPhysicsBody(
+            edgeFrom: CGPoint(x: -netSizes.rightSideWidth/2, y: -netSizes.rightSideHeight/2),
+            to: CGPoint(x: netSizes.rightSideWidth/2, y: netSizes.rightSideHeight/2))
         self.netRightSideNode.physicsBody?.isDynamic = false
         self.netRightSideNode.physicsBody?.categoryBitMask = pc.netEdge
         self.netRightSideNode.physicsBody?.collisionBitMask = pc.ball
